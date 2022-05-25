@@ -1,0 +1,132 @@
+/***********************************************************************
+ * h1-h6
+ **********************************************************************/
+
+main h1 {
+    margin: auto auto 20px;
+    border: 7px outset #6e4800;
+    background-repeat: repeat;
+    background-position: center top;
+    width: 50%;
+    padding: 30px 10px;
+    background-color: #dfdbdb;
+    background-image: url(../../image/pattern/pattern6.jpg);
+    display: block;
+    font-size: xx-large;
+    color: #004700;
+    font-weight: bold;
+    text-align: center;
+    height: auto;
+}
+
+main h1 span {
+    padding: 2px;
+    background-color: #fdfdfd;
+}
+
+main h3 {
+    border-left: 5px solid #bd0cd4;
+    border-bottom: 1px solid #124ac2;
+    border-width: 0px 0px 2px 2px;
+    padding: 2px 1em;
+    margin: 2px 0.2em;
+    font-size: normal;
+    text-align: left;
+    font-weight: normal;
+    color: black;
+    display: block;
+    width: auto;
+}
+
+main h4 {
+    border: 2px outset forestgreen;
+    background-color: mintcream;
+    padding: 5px;
+    display: block;
+}
+
+
+/***********************************************************************
+ * main
+ **********************************************************************/
+
+.train {
+    font-weight: normal;
+    color: black;
+}
+
+.train table td {
+    text-align: center;
+    border: black solid 1px;
+}
+
+.train table td:first-child {
+    width: 60%;
+}
+
+.train table td:last-child {
+    width: 40%;
+}
+
+.train table {
+    background-color: aliceblue;
+    border: black solid 1px;
+    border-collapse: collapse;
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+.train {
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+}
+
+.train-time {
+    margin: 10px;
+}
+
+.flex {
+    display: flexbox;
+    flex-direction: row;
+}
+
+.flex div {
+    display: inline;
+}
+
+main .p {
+    margin: 1em 2em;
+}
+
+@media screen and (max-width: 800px) {
+    main .box {
+        flex-direction: column;
+    }
+    main .float {
+        display: flex;
+        margin: 0 3px;
+        flex-direction: column-reverse;
+    }
+    main .image {
+        max-width: 80%;
+        height: auto;
+        position: relative;
+        align-self: center;
+    }
+    main .image dd {
+        text-align: center;
+    }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+    main .box {
+        flex-direction: row;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    main .box {
+        flex-direction: row;
+    }
+}

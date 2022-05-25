@@ -1,0 +1,139 @@
+@charset "utf-8";
+/***********************************************************************
+ * Reset
+ **********************************************************************/
+ 
+ /***********************************************************************
+ * Structure
+ **********************************************************************/
+html {
+	height: 100%;
+}
+
+ /***********************************************************************
+ * header
+ **********************************************************************/
+ header img{
+  margin: 15px 15px 15px 15px;
+}
+header h1{
+  padding: 0.1em 0.3em 0em 0.3em;
+  background-position: 0 0;
+  background-size: auto 200%;
+  transition: .3s;
+  position: absolute;
+  top:50px;
+  left:130px;
+  color: #FFFFFF;
+}
+
+header h1:hover{
+ background-position: 0 100%;
+ color: #a8a8a8;
+}
+header img:hover{
+ color:#eeeeee94;
+ opacity:0.9;
+}
+header #title {
+  display: flex;
+  background-color:#0b5f79;
+}
+
+/***********************************************************************
+ * h1-h6
+ **********************************************************************/
+
+/***********************************************************************
+ * main
+ **********************************************************************/
+ main h1 {
+    margin: auto auto 20px;
+    padding:10px;
+    border:7px outset #000099 ;
+    background-repeat: repeat;
+    background-position:  center top;
+    width: 50%;
+    padding-top: 30px;
+    background-color: #dfdbdb;
+    background-image: url(../image/pattern/coffee_img.png);
+    display: block;
+    font-size: xx-large;
+    color: #004700;
+    font-weight: bold;
+    text-align: center;
+    height: 65px;
+  }
+ main h1 span {
+    padding:2px;
+    background-color:#fdfdfd; 
+ }
+ main h2 {
+    border-style: dotted solid;
+    border-color: #33cc00;
+    border-width: 2px 1px 2px 8px;
+    padding: 2px 2px 2px 2px;
+    font-size: large;
+    text-align: left;
+    font-weight: bold;
+    color: #006300;
+    font-style: italic;
+    display: block;
+  }
+
+  main h3 {
+    border-style: solid;
+    border-color: #0036cc;
+    border-width: 0px 0px 2px 2px;
+    padding: 2px 1em;
+    margin:2px 2em;
+    font-size: normal;
+    text-align: left;
+    font-weight: bold;
+    color: #634000;
+    font-style: italic;
+    display: block;
+    width:auto;
+  }
+
+  
+main .p{
+ margin:1em 2em;
+}
+  
+@media screen and (max-width: 800px) {
+  main .box{
+    flex-direction:column;
+  }
+  
+  main .float{
+    display:flex; 
+    margin:0 3px;
+    flex-direction:column-reverse;
+  }
+
+  main .image{
+    max-width:80%;
+    height:auto;
+    position: relative;
+    align-self: center;
+  }
+
+
+  main .image dd{
+    text-align:center;
+  }
+
+}
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  main .box{
+    flex-direction:row;
+  }
+
+}
+@media screen and (min-width: 1000px){
+  main .box{
+    flex-direction:row;
+  }
+
+}

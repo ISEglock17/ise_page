@@ -1,0 +1,355 @@
+@charset "utf-8";
+/***********************************************************************
+ * Reset
+ **********************************************************************/
+ 
+ /***********************************************************************
+ * Structure
+ **********************************************************************/
+html {
+	height: 100%;
+}
+
+ /***********************************************************************
+ * header
+ **********************************************************************/
+ header img{
+  margin: 15px 15px 15px 15px;
+}
+header h1{
+  padding: 0.1em 0.3em 0em 0.3em;
+  background-position: 0 0;
+  background-size: auto 200%;
+  transition: .3s;
+  position: absolute;
+  top:50px;
+  left:130px;
+  color: #FFFFFF;
+}
+
+header h1:hover{
+ background-position: 0 100%;
+ color: #a8a8a8;
+}
+header img:hover{
+ color:#eeeeee94;
+ opacity:0.9;
+}
+header #title {
+  display: flex;
+  background-color:#0b5f79;
+}
+
+/***********************************************************************
+ * h1-h6
+ **********************************************************************/
+
+/***********************************************************************
+ * main
+ **********************************************************************/
+ main h1 {
+    margin: auto auto 20px;
+    padding:10px;
+    border:7px outset #000099 ;
+    background-repeat: repeat-x;
+    background-position:  center center;
+    width: 50%;
+    padding-top: 30px;
+    background-image: url(../image/pattern/pattern5.jpg);
+    display: block;
+    font-size: xx-large;
+    color: #004700;
+    font-weight: bold;
+    text-align: center;
+    height: 65px;
+  }
+ main h1 span {
+    padding:2px;
+    background-color:#fdfdfd; 
+ }
+ main h2 {
+    border-style: dotted solid;
+    border-color: #33cc00;
+    border-width: 2px 1px 2px 8px;
+    padding: 2px 2px 2px 2px;
+    font-size: large;
+    text-align: left;
+    font-weight: bold;
+    color: #006300;
+    font-style: italic;
+    display: block;
+  }
+
+  main .image img{
+    max-width: 600px;
+    width:auto;
+  }
+
+  main dl{
+    border:2px solid black;
+    padding:5px;
+    margin:5px 3px;
+  }
+
+  main dt::before{
+    content:"・"
+  }
+
+ /***********************************************************************
+ * main table
+ **********************************************************************/
+  main .table{
+    margin: 2px 1em 1em;
+  }
+
+  main .table table{
+    width: 60%;
+    border-collapse:separate;
+    border-spacing: 0;
+  }
+  
+  main .table table th:first-child{
+    border-radius: 5px 0 0 0;
+  }
+  
+  main .table table th:last-child{
+    border-radius: 0 5px 0 0;
+    border-right: 1px solid #3c6690;
+  }
+  
+  main .table table th{
+    text-align: center;
+    color:white;
+    background: linear-gradient(#829ebc,#225588);
+    border-left: 1px solid #3c6690;
+    border-top: 1px solid #3c6690;
+    border-bottom: 1px solid #3c6690;
+    box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+    width: 25%;
+    padding: 10px 0;
+  }
+  
+  main .table table td{
+    text-align: center;
+    border-left: 1px solid #a8b7c5;
+    border-bottom: 1px solid #a8b7c5;
+    border-top:1px solid #a8b7c5;
+    box-shadow: 0px -3px 5px 1px #eee inset;
+    width: 25%;
+    padding: 10px 0;
+  }
+  
+  main .table table td:first-child{
+    border-radius: 5px 0 0 0;
+  }
+
+  main .table table td:last-child{
+    border-right: 1px solid #a8b7c5;
+  }
+  
+  main .table table tr:last-child td:first-child {
+    border-radius: 0 0 0 5px;
+  }
+  
+  main .table table tr:last-child td:last-child {
+    border-radius: 0 0 5px 0;
+  }
+  
+/***********************************************************************
+ * main table2
+ **********************************************************************/
+  main .table2{
+    margin: 2px 1em 1em;
+  }
+
+  main .table2 table{
+    width: 60%;
+    border-collapse:separate;
+    border-spacing: 0;
+  }
+  
+  main .table2 caption{
+    margin:1em 0 1em;
+    font-size: large;
+  }
+
+  main .table2 caption::before, caption::after{
+    content: "――――";
+  }
+
+  main .table2 table th:first-child{
+    border-radius: 5px 0 0 0;
+  }
+  
+  main .table2 table th:last-child{
+    border-radius: 0 5px 0 0;
+    border-right: 1px solid #3c6690;
+  }
+  
+  main .table2 table th{
+    text-align: center;
+    color:white;
+    background: linear-gradient(#829ebc,#225588);
+    border-left: 1px solid #3c6690;
+    border-top: 1px solid #3c6690;
+    border-bottom: 1px solid #3c6690;
+    box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+    width: 50%;
+    padding: 10px 0;
+  }
+  
+  main .table2 table td{
+    text-align: center;
+    border-left: 1px solid #a8b7c5;
+    border-bottom: 1px solid #a8b7c5;
+    border-top:1px solid #a8b7c5;
+    box-shadow: 0px -3px 5px 1px #eee inset;
+    width: 25%;
+    padding: 10px 0;
+  }
+
+  main .table2 table td:last-child{
+    border-right: 1px solid #a8b7c5;
+  }
+  
+  main .table2 table tr:last-child td:first-child {
+    border-radius: 0 0 0 5px;
+  }
+  
+  main .table2 table tr:last-child td:last-child {
+    border-radius: 0 0 5px 0;
+  }
+
+/***********************************************************************
+ * main table3
+ **********************************************************************/
+ main .table3{
+  margin: 2px 1em 1em;
+}
+
+main .table3 table{
+  width: 60%;
+  border-collapse:separate;
+  border-spacing: 0;
+}
+
+main .table3 table th:first-child{
+  border-radius: 5px 0 0 0;
+}
+
+main .table3 table th:last-child{
+  border-radius: 0 5px 0 0;
+  border-right: 1px solid #3c6690;
+}
+
+main .table3 table th{
+  text-align: center;
+  color:white;
+  background: linear-gradient(#829ebc,#225588);
+  border-left: 1px solid #3c6690;
+  border-top: 1px solid #3c6690;
+  border-bottom: 1px solid #3c6690;
+  box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+  width: 25%;
+  padding: 3px 0;
+}
+
+main .table3 table td{
+  text-align: center;
+  border-left: 1px solid #a8b7c5;
+  border-bottom: 1px solid #a8b7c5;
+  border-top:1px solid #a8b7c5;
+  box-shadow: 0px -3px 5px 1px #eee inset;
+  width: 25%;
+  padding: 3px 0;
+  font-size: small;
+}
+
+main .table3 table td:first-child{
+  border-radius: 5px 0 0 0;
+}
+
+main .table3 table td:last-child{
+  border-right: 1px solid #a8b7c5;
+}
+
+main .table3 table tr:last-child td:first-child {
+  border-radius: 0 0 0 5px;
+}
+
+main .table3 table tr:last-child td:last-child {
+  border-radius: 0 0 5px 0;
+}
+/***********************************************************************
+ * media
+ **********************************************************************/
+@media screen and (max-width: 800px) {
+  main .box{
+    flex-direction:column;
+  }
+  
+  main .float{
+    display:flex; 
+    margin:0 3px;
+    flex-direction:column-reverse;
+  }
+
+  main .image{
+    max-width:80%;
+    height:auto;
+    position: relative;
+    align-self: center;
+  }
+
+  main .image img{
+    max-width: 400px;
+    width:80%;
+  }
+
+  main .table table{
+    width: 90%;
+  }
+
+  main .table2 table{
+    width: 90%;
+  }
+
+  main .table3 table{
+    width: 90%;
+  }
+
+  main .image dd{
+    text-align:left;
+  }
+
+}
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  main .box{
+    flex-direction:row;
+  }
+
+  main .float{
+    display:flex; 
+    margin:0 3px;
+    flex-direction:column-reverse;
+  }
+
+  main .table table{
+    width: 70%;
+  }
+
+  main .table2 table{
+    width: 90%;
+  }
+
+  main .table3 table{
+    width: 90%;
+  }
+
+}
+@media screen and (min-width: 1000px){
+  main .box{
+    flex-direction:row;
+  }
+
+}
