@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!-- saved from url=(0087)file:///C:/Users/ISE/Desktop/shindai%20programming%20language%20I%20homework%203-2.html -->
+<html lang="ja">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../notestyle.css">
+    <link rel="stylesheet" href="../button.css">
+    <title>電気通信大学 2025年前期 数学 問題3</title>
+
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: { autoNumber: "AMS" },
+                Macros:{
+                    dis: ["{\\displaystyle{#1}}",1],
+                    bm:["{\\boldsymbol{#1}}",1],
+                    dlim: ["{\\displaystyle{\\lim_{#1}}}",1],
+                    Lim: ["{\\displaystyle{\\lim_{#1 \\to \\infty}}}",1],
+                    ep: "{\\varepsilon}",
+                    max: "{\\mathrm{max}}",
+                    N: "{\\mathbb{N}}",
+                    R: "{\\mathbb{R}}",
+                    min: "{\\mathrm{min}}",
+                    tx: "{\\tilde{x}}",
+                },
+            },
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\"] ],
+                processEscapes: true
+            }, 
+            "HTML-CSS": {
+                matchFontHeight: false,
+                undefinedFamily: "Meiryo, STIXGeneral, 'Arial Unicode MS', serif",
+                mtextInheritFont: true,
+                scale: 100
+            },
+            displayAlign: "left",
+            displayIndent: "4em"
+        });
+    </script>
+</head>
+
+<body>
+
+
+    <div class="document" id="top">
+        <h1><span>問題3</span></h1>
+      
+
+        <h3>問題3 解答</h3>
+        <div class="def ">
+            <span class="def-t ">
+                <h4>問題</h4>
+            </span>
+            <div class="flex">
+                <div class="text" style="width: 100%;">
+                    <p>時刻$\;t\;$における座標が$$x = \cos 5t,\; y = \cos 6t \qquad (0 \leqq t \leqq \pi)$$で表される座標平面上の点$\; \mathrm{P}\;$の運動を考える。点$\; \mathrm{P} \;$がえがく曲線を$\;C\;$とする。曲線$\;C\;$の概形は下図のようになり，$\;t\;$が$\;0 \leqq t \leqq \pi\;$の範囲で動くとき点$\; \mathrm{P}\;$が2回通過する点は10個ある。そのうち3点$\; \mathrm{A, B, M}\;$を下図のようにとる。$\;\displaystyle \cos \frac{\pi}{5} = \frac{\sqrt{5} + 1}{4}\;$を用いて，以下の問いに答えよ。</p>
+                    <p></p>
+                    <p style="text-align: right;"> (配点 50)</p>
+                </div>
+                <div class="caption" style="width: 5%;">
+                    
+                </div>
+            </div>
+
+            <div class="flex">
+                <div class="text" style="width: 100%;">
+                  <p style="text-indent: 0;">(i) 点$\; \mathrm{M}\;$は$\;y\;$軸上の$\;y \lt 0\;$の部分にある。点$\; \mathrm{M}\;$の$\;y\;$座標を，有理数$\; a, b\;$を用いて$\; a + b\sqrt{5}\;$の形で表せ。
+                  <p style="text-indent: 0;">(ii) $\; 0 \leqq t \leqq \pi\;$の範囲で次の方程式を解け。$$\cos 6t = \cos \frac{\pi}{5}$$</p>
+                  <p style="text-indent: 0;">(iii) $\;  \alpha_1 = \displaystyle{\frac{\pi}{30}}\;$とする。$\; t = \alpha_1\;$のとき，$\; (\cos 5\alpha_1, \; \cos 6\alpha_1)\;$は点$\; \mathrm{A}\;$である。$\; \alpha_1 \lt \alpha_2 \lt \pi\;$をみたすある値$\; \alpha_2\;$について，$\; t = \alpha_2\;$のときも$\; (\cos 5\alpha_2,\; \cos 6\alpha_2)\;$が点$\; \mathrm{A}\;$となる。この値$\; \alpha_2\;$を求めよ。</p>
+                  <p style="text-indent: 0;">(iv) 点$\; \mathrm{M}\;$と第3象限の点$\; \mathrm{B}\;$は$\; y\;$座標が等しい。点$\; \mathrm{B}\;$の$\; x\;$座標を求めよ。また，直線$\; \mathrm{AB}\;$の方程式を，実数$\; m, n\;$を用いて$\; y= mx + n\;$の形で表せ。</p>
+                </div>
+                <div class="caption" style="width: 5%;">  
+                </div>
+            </div>
+            <img src="./note3_image/image1.png" width="40%">
+        </div>
+
+        <div class="th ">
+            <span class="th-t ">
+                <h5>解答</h5>
+            </span>
+            <p>今の高校では関数$f: X \to Y$のことを$^\forall x \in X$</p>
+            <p>$Y$の元$y$が定まる規則のことを定義したりするようだがここでいう規則は，規則的である必要は全くない。</p>
+        </div>
+
+        <div class="text ">
+            <p><u>例</u></p>
+            <p>$X$: 集合とし$M(X) = X$から$X$への写像全体の集合とする。</p>
+            $$\begin{array}{ccc}
+                M(X)\times M(X)                      & \rightarrow      &   M(X) &: \text{二項演算とする} \\
+                \style{display:inline-block; transform:rotate(-90deg);}{\in} &             & \style{display:inline-block; transform:rotate(-90deg);}{\in}&\\
+                (f, g)                      & \mapsto     & f\circ g &: \text{合成写像}
+           \end{array}$$
+            </p>
+            <p>を二項演算とする。</p>
+            <p>このとき，$$^\forall f, ^\forall g ,\; ^\forall h \in M(X), \; (f \circ g) \circ h = f \circ (g \circ h)$$が成立する。</p>
+            <p>つまり結合法則が成立する。</p>
+            <p>ゆえに$(M(X), \circ)$は半群</p>
+            $$\begin{array}{cccc}
+                e =  \mathrm{idx} & X                   & \rightarrow      &   X &: \text{恒等写像} \\
+                &\style{display:inline-block; transform:rotate(-90deg);}{\in} &             & \style{display:inline-block; transform:rotate(-90deg);}{\in}&\\
+                &x                     & \mapsto     &x &
+           \end{array}$$
+                とする。</p>
+            <p>$^\forall f\in M(X), f\circ \mathrm{idx} = f = \mathrm{idx} \circ f$</p>
+            <p>ゆえにidxは$M(X)$の単位元。</p>
+            <p>よって，$M(X)$はモノイド。</p>
+        </div>
+
+        <div class="text ">
+            <p><u>例</u></p>
+            <p>$M_n(\mathbb{R}) := $実数を成分とする$n$次正方行列全体の集合<br>とする。</p>
+            <p>$$\begin{array}{ccc}
+                M_n(\R)\times M_n(\R)                      & \rightarrow      &   M_n (\R) & \\
+                \style{display:inline-block; transform:rotate(-90deg);}{\in} &             & \style{display:inline-block; transform:rotate(-90deg);}{\in}&\\
+                (A, B)                      & \mapsto     & A\cdot B &: \text{通常の行列の積}
+           \end{array}$$
+            </p>
+            <p>$^\forall A,\;  ^\forall B,\; ^\forall C \in M_n(\mathbb{R}), (AB)C = A(BC)$だから$M_n(\R)$は半群。</p>
+            <p>$I$: $n$次単位行列とすると，$I \in M_n(\R)$で，$^\forall A \in M_n(\R), A \cdot I = A = I \cdot A$</p>
+            <p>$\therefore I$は$M_n(\R)$の単位元。/p>
+            <p>$\therefore M_n(\R)$はモノイド。</p>
+        </div>
+
+
+
+        <br>
+        <br>        <p style="text-align:right;"><a href="#top" class="btn-square-slant ">↑トップに戻る</a></p>
+
+
+
+        <div class="flex">
+            <p style="width:33%;"><a href="./note2.html " class="btn-square-slant ">←前のページに戻る</a></p>
+            <p style="width:33%;"><a href="../index.html " class="btn-square-slant ">トップページに戻る</a></p>
+            <p style="width:33%;"><a href="./note4.html " class="btn-square-slant ">次のページに移る→</a></p>
+        </div>
+
+        <br><br><br><br>
+    </div>
+
+
+
+</body>
+
+</html>}

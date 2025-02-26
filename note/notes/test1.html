@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<!-- saved from url=(0087)file:///C:/Users/ISE/Desktop/shindai%20programming%20language%20I%20homework%203-2.html -->
+<html lang="ja">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../notestyle.css">
+    <link rel="stylesheet" href="../button.css">
+    <title>解析学 ノート4</title>
+    <!--
+    <script type="text/javascript" src="./config.js" defer></script>
+    TeX: {
+                equationNumbers: { autoNumber: "AMS" },
+                Macros:{
+                    N: "{\\mathrm{N}}",
+                    dis: ["{\\displaystyle{#1}}",1],
+                    bm:["{\\boldsymbol{#1}}",1],
+                    dlim: ["{\\displaystyle{\\lim_{#1}}}",1],
+                    ep: "{\\varepsilon}",
+                    max: "{\\displaystyle{\mathrm{max}}}"
+                },
+                extensions: [
+                    "cancel.js",           // 抹消線を有効にする。
+                    "color.js"             // 文字の色付けを有効にする。
+                ]
+            },
+    -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: { autoNumber: "AMS" },
+                Macros:{
+                    dis: ["{\\displaystyle{#1}}",1],
+                    bm:["{\\boldsymbol{#1}}",1],
+                    dlim: ["{\\displaystyle{\\lim_{#1}}}",1],
+                    Lim: ["{\\displaystyle{\\lim_{#1 \\to \\infty}}}",1],
+                    ep: "{\\varepsilon}",
+                    max: "{\\mathrm{max}}",
+                    N: "{\\mathbb{N}}",
+                    R: "{\\mathbb{R}}",
+                    min: "{\\mathrm{min}}",
+                },
+            },
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\"] ],
+                processEscapes: true
+            }, 
+            "HTML-CSS": {
+                matchFontHeight: false,
+                undefinedFamily: "Meiryo, STIXGeneral, 'Arial Unicode MS', serif",
+                mtextInheritFont: true,
+                scale: 100
+            },
+            displayAlign: "left",
+            displayIndent: "4em"
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+
+<body>
+
+
+    <div class="document" id="top">
+        <h1><span>解析学 ノート4</span></h1>
+        <p style="text-align:right;">信州大学 工学部 電子情報システム工学科4年 鈴木一生(20T2079F)</p>
+        <h2>リンク集</h2>
+        <div class="th" id="link">
+            <span class="th-t" style="width:10em;">
+                <h5>ページ構成(リンク)</h5>
+            </span>
+            <ul>
+                <li><a href="#second">第4章 関数の連続性</a></li>
+                <ul>
+                    <li></li>
+                </ul>
+            </ul>
+        </div>
+
+        <h2 id="second">第4章 関数の連続性</h2>
+        <div class="def">
+            <span class="def-t">
+                <h4>1</h4>
+            </span>
+         
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>194
+                問 題 解 答
+                $\varepsilon\gt0$ に対して, $\delta(\varepsilon)=\min \left\{\delta_1(1), \delta_1(\varepsilon /(1+|f(a)|+|g(a)|)), \delta_2(\varepsilon /(1+|f(a)|+|g(a)|))\right\}$ と定めると
+                $$
+                \begin{aligned}
+                |x-a|\lt\delta(\varepsilon) \Longrightarrow|f(x) g(x)-f(a) g(a)| & \leq|f(x)||g(x)-g(a)|+|g(a)||f(x)-f(a)| \\
+                & \lt\frac{(1+|f(a)|) \varepsilon}{1+|f(a)|+|g(a)|}+\frac{|g(a)| \varepsilon}{1+|f(a)|+|g(a)|}=\varepsilon
+                \end{aligned}
+                $$
+                
+                が成り立つので, $f(x) g(x)$ も $x=a$ で連続である.
+                問 4.3. $g(x)$ が $x=a$ で連続であるから, 問 3.7 と同様にして, (D.8) より $|x-a|\lt\delta_2(|g(a)| / 2)$ $\Longrightarrow|g(a)| / 2\lt|g(x)|$ が成り立つ。このとき
+                $$
+                |x-a|\lt\delta_2\left(\frac{|g(a)|}{2}\right) \Longrightarrow\left|\frac{1}{g(x)}-\frac{1}{g(a)}\right|=\frac{|g(x)-g(a)|}{|g(x)||g(a)|}\lt\frac{2}{|g(a)|^2}|g(x)-g(a)|
+                $$
+                
+                が成り立つ。任意の $\varepsilon\gt0$ に対して, $\delta(\varepsilon)=\min \left\{\delta_2(|g(a)| / 2), \delta_2\left(|g(a)|^2 \varepsilon / 2\right)\right\}$ と定めると
+                $$
+                |x-a|\lt\delta(\varepsilon) \Longrightarrow\left|\frac{1}{g(x)}-\frac{1}{g(a)}\right|\lt\frac{2}{|g(a)|^2}|g(x)-g(a)|\lt\frac{2}{|g(a)|^2} \cdot \frac{|g(a)|^2 \varepsilon}{2}=\varepsilon
+                $$
+                
+                が成り立つので, $1 / g(x)$ も $x=a$ で連続である。
+                問 4.4. $f(x)$ は $x=a$ で連続であるから, (D.7) が成り立つ.すなわち, $|x-a|\lt\delta_1(\varepsilon) \Longrightarrow$ $f(a)-\varepsilon\lt f(x)\lt f(a)+\varepsilon$ が成り立つ. $f(a)\gt0$ より $\delta=\delta_1(f(a) / 2)$ とおくと, $|x-a|\lt$ $\delta \Longrightarrow f(x)\gt f(a) / 2\gt0$ が得られるので, $\delta$ として例えば $\delta_1(f(a) / 2)$ をととればよい。
+                
+                問 4.5. 任意の $\varepsilon\gt0$ に対して, $\delta(\varepsilon)=\varepsilon$ と定めると， $x \neq 0$ である任意の $x \in \mathbb{R}$ に対して $|x|\lt\delta(\varepsilon) \Longrightarrow|f(x)-f(0)|=|x \sin (1 / x)| \leq|x|\lt\delta(\varepsilon)=\varepsilon$ が成り立つ。また $x=0$ な らば, $|f(x)-f(0)|=0\lt\varepsilon$ は常に成り立つ. よって, ${ }^{\forall} \varepsilon\gt0,{ }^{\exists} \delta(\varepsilon)\gt0,{ }^{\forall} x \in \mathbb{R}[|x|\lt$ $\delta(\varepsilon) \Longrightarrow|f(x)-f(0)|\lt\varepsilon]$ が得られるので, $f(x)$ は $x=0$ で連続である.
+                以下では, $f(x), g(x)$ の区間 $I$ における連続性の定義をそれぞれ
+                $$
+                \begin{aligned}
+                & { }^{\forall} \varepsilon\gt0,{ }^{\forall} a \in I,{ }^{\exists} \delta_1(\varepsilon, a)\gt0,{ }^{\forall} x \in I\left[|x-a|\lt\delta_1(\varepsilon, a) \Longrightarrow|f(x)-f(a)|\lt\varepsilon\right] \\
+                & { }^{\forall} \varepsilon\gt0,{ }^{\forall} a \in I,{ }^{\exists} \delta_2(\varepsilon, a)\gt0,{ }^{\forall} x \in I\left[|x-a|\lt\delta_2(\varepsilon, a) \Longrightarrow|g(x)-g(a)|\lt\varepsilon\right]
+                \end{aligned}
+                $$
+                
+                とする。
+                問 4.6. $c_1 \neq 0$ かつ $c_2 \neq 0$ の場合を考える. $\left(c_1=0\right.$ または $c_2=0$ の場合も同様にして証明 できる.） $f(x)$ と $g(x)$ が区間 $I$ で連続であるから (D.9), (D.10) が成り立つ。任意の $\varepsilon\gt0$ と 任意の $a \in I$ に対して, $\delta(\varepsilon, a)=\min \left\{\delta_1\left(\varepsilon /\left(2\left|c_1\right|\right), a\right), \delta_2\left(\varepsilon /\left(2\left|c_2\right|\right), a\right)\right\}$ と定めると，(D.9), (D.10)より
+                $$
+                \begin{aligned}
+                |x-a|\lt\delta(\varepsilon, a) \Longrightarrow & \left|c_1 f(x)+c_2 g(x)-\left(c_1 f(a)+c_2 g(a)\right)\right| \\
+                & \leq\left|c_1\right||f(x)-f(a)|+\left|c_2\right||g(x)-g(a)|\lt\frac{\left|c_1\right| \varepsilon}{2\left|c_1\right|}+\frac{\left|c_2\right| \varepsilon}{2\left|c_2\right|}=\varepsilon
+                \end{aligned}
+                $$
+                
+                が成り立つので, $c_1 f(x)+c_2 g(x)$ も区間 $I$ で連続である.
+                問 4.7. 背理法で示す. $f(x)$ は $x=x_0$ で連続となる $I$ に属する有理数 $x_0$ が存在すると仮定 すると, ${ }^{\forall} \varepsilon\gt0,{ }^{\exists} \delta(\varepsilon)\gt0,{ }^{\forall} x \in I\left[\left|x-x_0\right|\lt\delta(\varepsilon) \Longrightarrow\left|f(x)-f\left(x_0\right)\right|\lt\varepsilon\right]$ が成り立 つ. $\varepsilon$ は任意の正の数だら, $\varepsilon=3 / 2$ ととると, 上式は $\left|x-x_0\right|\lt\delta(3 / 2) \Longrightarrow|f(x)-4|\lt$ $3 / 2 \Longrightarrow 5 / 2\lt f(x)\lt11 / 2 \cdots$ (1) となる.ところで, 有理数 $x_0$ のいくらでも近くに無理数が存在するので, $\left|x_2-x_0\right|\lt\delta(3 / 2)$ をみたす無理数 $x_2$ が存在する.よって, (1) で $x=x_2$ とすると, $5 / 2\lt f\left(x_2\right)=1$ となり矛盾が得られる。
+            </p>
+        </div>
+
+        <div class="def ">
+            <span class="def-t ">
+                <h4>2</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>問 題 解 答
+                195
+                問 4.8. 背理法で示す.ある $x_0 \in I$ が存在して, $f(x)$ は $x=x_0$ で連続となると仮定すると, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta(\varepsilon) \gt 0,{ }^{\forall} x \in I\left[\left|x-x_0\right| \lt \delta(\varepsilon) \Longrightarrow\left|f(x)-f\left(x_0\right)\right| \lt \varepsilon\right] \cdots$ (1) が成り立つ. $x_0$ が無理数の場合. $f\left(x_0\right)=1$ である. $\varepsilon=1 / 2$ ととると (1) $\left|x-x_0\right| \lt \delta(1 / 2) \Longrightarrow$ $|f(x)-1| \lt 1 / 2 \Longrightarrow 1 / 2 \lt f(x) \lt 3 / 2 \cdots$ (2) となる.ところで, 無理数 $x_0$ のいくらで も近くに有理数が存在するので, $\left|x_1-x_0\right| \lt \delta(1 / 2)$ をみたす有理数 $x_1$ が存在する.よって, (2) で $x=x_1$ とすると, $1 / 2 \lt f\left(x_1\right)=0$ となり矛盾が得られる.
+                $x_0$ が有理数の場合。 $f\left(x_0\right)=0$ である. $\varepsilon=1 / 2$ ととると (1) $\left|x-x_0\right| \lt \delta(1 / 2) \Longrightarrow$ $|f(x)| \lt 1 / 2 \Longrightarrow-1 / 2 \lt f(x) \lt 1 / 2 \cdots$ (3) となる.ところで, 有理数 $x_0$ のいくらでも 近くに無理数が存在するので, $\left|x_2-x_0\right| \lt \delta(1 / 2)$ をみたす無理数 $x_2$ が存在する.よって, (3) で $x=x_2$ とすると, $1=f\left(x_2\right) \lt 1 / 2$ となり矛盾が得られる.
+                
+                問 4.9. (i) $f(x)$ は $x=0$ で連続である.(ii) $f(x)$ は $x \neq 0$ となるすべての点 $x$ で連続で ない。
+                まず (i)を示す.任意の $\varepsilon \gt 0$ に対して, $\delta(\varepsilon)=\varepsilon / 2$ と定めると，任意の $x \in \mathbb{R}$ に対して
+                $x$ は有理数 $\wedge|x| \lt \delta(\varepsilon) \Longrightarrow|f(x)-f(0)|=0 \lt \varepsilon$
+                $x$ は無理数 $\wedge|x| \lt \delta(\varepsilon) \Longrightarrow|f(x)-f(0)|=|2 x| \lt 2 \delta(\varepsilon)=\varepsilon$
+                
+                が成り立つので, $f(x)$ は $x=0$ で連続である。
+                次に (ii) を背理法で示す。ある $x_0(\neq 0)$ が存在して, $f(x)$ は $x=x_0$ で連続となると仮定 すると, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta(\varepsilon) \gt 0,{ }^{\forall} x \in \mathbb{R}\left[\left|x-x_0\right| \lt \delta(\varepsilon) \Longrightarrow\left|f(x)-f\left(x_0\right)\right| \lt \varepsilon\right] \cdots$ (1) が 成り立つ。
+                $x_0$ が無理数の場合. $f\left(x_0\right)=2 x_0$ である. $\varepsilon=\left|x_0\right|$ ととると (1) $\left|x-x_0\right| \lt \delta\left(\left|x_0\right|\right) \Longrightarrow$ $\left|f(x)-2 x_0\right| \lt \left|x_0\right| \Longrightarrow\left|x_0\right| \lt |f(x)| \lt 3\left|x_0\right| \cdots$ (2) となる. ところで, 無理数 $x_0$ のい くらでも近くに有理数が存在するので, $\left|x_1-x_0\right| \lt \delta\left(\left|x_0\right|\right)$ をみたす有理数 $x_1$ が存在する. よって, (2)で $x=x_1$ とすると, $0 \lt \left|x_0\right| \lt f\left(x_1\right)=0$ となり矛盾が得られる.
+                $x_0$ が有理数の場合. $f\left(x_0\right)=0$ である. $\delta_0=\min \left\{\delta\left(\left|x_0\right|\right),\left|x_0\right| / 4\right\}$ と定めると，(1)より $\left|x-x_0\right| \lt \delta_0 \Longrightarrow\left|x-x_0\right| \lt \delta\left(\left|x_0\right|\right) \Longrightarrow|f(x)| \lt \left|x_0\right| \cdots$ (3) が成り立つ.ところで，有理数 $x_0$ のいくらでも近くに無理数が存在するので, $\left|x_2-x_0\right| \lt \delta_0$ をみたす無理数 $x_2$ が存在する. よって, (3) で $x=x_2$ とすると, $2\left|x_2\right|=\left|f\left(x_2\right)\right| \lt \left|x_0\right| \cdots$ (4) が成り立つ.一方, $\left|x_0\right|-\left|x_2\right| \leq\left|x_0-x_2\right| \lt \delta_0 \leq\left|x_0\right| / 4$ で而るから， $3\left|x_0\right| / 4 \lt \left|x_2\right|$ が成り立つ.これと (4) を 合わせると $3\left|x_0\right| / 4 \lt \left|x_0\right| / 2$, すなわち, $0 \lt \left|x_0\right| / 4 \lt 0$ となり矛盾が得られる.
+                
+                問 4.10. 背理法で示す. $f\left(x_0\right) \lt 0$ となる $x_0 \in I$ が存在すると仮定する.
+                $x_0$ が有理数の場合. 背理法の仮定 $f\left(x_0\right) \lt 0$ は, I に属する任意の有理数 $x$ に対して $f(x) \geq 0$ である…(1) に矛盾する.
+                $x_0$ が無理数の場合. $f(x)$ の $I$ での連続性より $x=x_0$ でも連続であるから, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta(\varepsilon) \gt $ $0,{ }^{\forall} x \in I\left[\left|x-x_0\right| \lt \delta(\varepsilon) \Longrightarrow\left|f(x)-f\left(x_0\right)\right| \lt \varepsilon\right] \cdots$ (2) が成り立つ. (2) で $\varepsilon=\left|f\left(x_0\right)\right| / 2$ とすると, $f\left(x_0\right) \lt 0$ より
+                $$
+                \begin{aligned}
+                \left|x-x_0\right| \lt \delta\left(\frac{\left|f\left(x_0\right)\right|}{2}\right) & \Longrightarrow f\left(x_0\right)-\frac{\left|f\left(x_0\right)\right|}{2} \lt f(x) \lt f\left(x_0\right)+\frac{\left|f\left(x_0\right)\right|}{2} \\
+                & \Longrightarrow \frac{3}{2} f\left(x_0\right) \lt f(x) \lt \frac{f\left(x_0\right)}{2} \lt 0 \ldots
+                \end{aligned}
+                $$
+                
+                が成り立つ. ところで，無理数 $x_0$ のいくらでも近くに有理数が存在するので， $\left|x_1-x_0\right| \lt $ $\delta\left(\left|f\left(x_0\right)\right| / 2\right)$ をみたす有理数 $x_1$ が存在する. よって, (3) で $x=x_1$ とすると, $f\left(x_1\right) \lt 0$ と なり，(1)に矛盾する。</p>
+        </div>
+
+        <div class="def ">
+            <span class="def-t ">
+                <h4>3</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>196
+                問 題 解 答
+                問 4.11.与えられた命題は成り立たない。なぜなら, $a$ を $I$ に属する無理数とし, $f(x)=(x-a)^2$ とすると, $f(x)$ は $I$ で連続であり, $I$ に属する任意の有理数 $x$ に対して $x \neq a$ より $f(x) \gt 0$ であるが, $f(a)=0$ なので, 任意の $x \in I$ に対して $f(x) \gt 0$ とは限らない。
+                
+                問 4.12. $f(a) \neq 0$ とする. $f(x)$ の $[a, b]$ での連続性より， $x=a$ でも連続であるから， ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta(\varepsilon) \gt 0,{ }^{\forall} x \in[a, b][|x-a| \lt \delta(\varepsilon) \Longrightarrow|f(x)-f(a)| \lt \varepsilon] \cdots$ (1) が成り立つ. $\delta_1=\min \{\delta(|f(a)| / 2) / 2, b-a\}$ と定めると, (1)より $a \leq x \leq a+\delta_1 \Longrightarrow|f(x)-f(a)| \lt $ $|f(a)| / 2 \Longrightarrow|f(a)| / 2 \lt f(x) \lt 3|f(a)| / 2$ が成り立つ。このとき
+                $$
+                \int_a^b|f(x)| d x \geq \int_a^{a+\delta_1}|f(x)| d x \gt \int_a^{a+\delta_1} \frac{|f(a)|}{2} d x=\frac{|f(a)| \delta_1}{2} \gt 0
+                $$
+                
+                が得られる. $f(b) \neq 0$ の場合も同様にして示せる。
+                問 4.13. 任意の $y \in \mathbb{R}$ に対して, $|\sin y| \leq \min \{1,|y|\}$ より
+                $$
+                |\cos x-\cos \tilde{x}|=\left|-2 \sin \frac{x+\tilde{x}}{2} \sin \frac{x-\tilde{x}}{2}\right| \leq 2\left|\frac{x-\tilde{x}}{2}\right|=|x-\tilde{x}|
+                $$
+                
+                が成り立つ. よって, $\delta(\varepsilon)=\varepsilon$ と定めると, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta(\varepsilon) \gt 0,{ }^{\forall} x \in I,{ }^{\forall} \tilde{x} \in I[|x-\tilde{x}| \lt $ $\delta(\varepsilon) \Longrightarrow|\cos x-\cos \tilde{x}| \leq|x-\tilde{x}| \lt \varepsilon]$ が成り立つので, $\cos x$ は $[0, \infty)$ で一様連続である.
+                問 4.14. $\varepsilon_0=1, x_k=k-1 / k^2, \tilde{x}_k=k$ とすると, $\left\{x_k\right\},\left\{\tilde{x}_k\right\} \subset[0, \infty)$ であり， $f\left(x_k\right)=0, f\left(\tilde{x}_k\right)=1$ となっている.このとき, $\left|x_k-\tilde{x}_k\right|=1 / k^2 \rightarrow 0(k \rightarrow \infty)$ かつ $\left|f\left(x_k\right)-f\left(\tilde{x}_k\right)\right|=1=\varepsilon_0$ より, 否定命題 (4.10) が成り立つので, $f(x)$ は $[0, \infty)$ で一様連続でない。
+                
+                問 4.15. (1) $\varepsilon_0=2, x_k=k+1 / k, \tilde{x}_k=k$ とすると, $\left\{x_k\right\},\left\{\tilde{x}_k\right\} \subset[0, \infty)$ である. この とき, $\left|x_k-\tilde{x}_k\right|=1 / k \rightarrow 0(k \rightarrow \infty)$ かつ $\left|f\left(x_k\right)-f\left(\tilde{x}_k\right)\right|=2+1 / k^2 \gt 2=\varepsilon_0$ より, 否定命題 (4.10) が成り立つので, $f(x)=x^2$ は $[0, \infty)$ で一様連続でない。
+                (2) $\varepsilon_0=1, x_k=2 /((2 k+1) \pi), \tilde{x}_k=1 /(k \pi)$ とすると, $\left\{x_k\right\},\left\{\tilde{x}_k\right\} \subset(0,1)$ である。この とき, $\left|x_k-\tilde{x}_k\right|=1 /((2 k+1) k \pi) \rightarrow 0(k \rightarrow \infty)$ かつ $\left|f\left(x_k\right)-f\left(\tilde{x}_k\right)\right|=\mid \sin (k+1 / 2) \pi-$ $\sin k \pi \mid=1=\varepsilon_0$ より, 否定命題 (4.10) が成り立つので, $f(x)=\sin (1 / x)$ は $(0,1)$ で一様連続でない。
+                
+                問 4.16. (1) 任意の $x \in[0, \infty)$ に対して $\left|f^{\prime}(x)\right|=\left|-1 /(x+1)^2\right| \leq 1$ であるから， $f^{\prime}(x)$ は $[0, \infty)$ で有界である。したがって, 例題 4.11 により， $f(x)$ は $[0, \infty)$ で一様連続である.
+                (2) 任意の $x \in[0, \infty)$ に対して
+                $$
+                \left|f^{\prime}(x)\right|=\left|\frac{2 x \cos \left(x^2\right)}{x+1}-\frac{\sin \left(x^2\right)}{(x+1)^2}\right| \leq \frac{2 x}{x+1}+\frac{1}{(x+1)^2} \leq 3
+                $$
+                
+                であるから, $f^{\prime}(x)$ は $[0, \infty)$ で有界である。したがって, 例題 4.11 により, $f(x)$ は $[0, \infty)$ で 一様連続である。
+                
+                問 4.17. 任意の $\varepsilon \gt 0$ に対して, $\delta(\varepsilon)=\varepsilon / L$ と定めると, 任意の $x \in I$ と任意の $\tilde{x} \in I$ に対 して, 条件式より $|x-\tilde{x}| \lt \delta(\varepsilon) \Longrightarrow|f(x)-f(\tilde{x})| \leq L|x-\tilde{x}| \lt L \delta(\varepsilon)=\varepsilon$ が成り立つ. したがって, $f(x)$ は $I$ で一様連続である。
+                
+                問 4.18. 背理法で示す. $\lim _{x \rightarrow \infty} f(x) \neq 0$ と仮定すると, 例題 3.5 の (3.2) より ${ }^{\exists} \varepsilon_0 \gt 0,{ }^{\exists}\left\{x_k\right\} \subset$ $I\left[x_k \geq k \wedge\left|f\left(x_k\right)\right| \geq \varepsilon_0\right] \cdots$ (1) が成り立つ。また $f(x)$ は $I$ で一様連続であるから， ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta(\varepsilon) \gt 0,{ }^{\forall} x \in I,{ }^{\forall} \tilde{x} \in I[|x-\tilde{x}| \lt \delta(\varepsilon) \Longrightarrow|f(x)-f(\tilde{x})| \lt \varepsilon]$ が成り立つ.特に $\delta_0=\delta\left(\varepsilon_0 / 2\right)$ とおき, $\tilde{x}=x_k$ ととると, 任意の $x \in I$ に対して, 上式と (1) より
+                $$
+                \left|x-x_k\right| \lt \delta_0 \Longrightarrow\left|f(x)-f\left(x_k\right)\right| \lt \frac{\varepsilon_0}{2} \Longrightarrow|f(x)| \gt \frac{\varepsilon_0}{2} \Longrightarrow|f(x)|^p \gt \left(\frac{\varepsilon_0}{2}\right)^p
+                $$</p>
+        </div>
+
+        
+        <div class="def ">
+            <span class="def-t ">
+                <h4>4</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>197
+                が成り立つ.よって, 演習問題 4.1 の結果より $\left|x-x_k\right| \leq \delta_0 \Longrightarrow|f(x)|^p \geq\left(\varepsilon_0 / 2\right)^p \ldots$ (2) が得られる。ところで， $x_k \rightarrow \infty(k \rightarrow \infty)$ であるから，もし必要ならば $\left\{x_k\right\}$ の部分列をと ることにより， ${ }^{\forall} k \in \mathbb{N}\left[x_{k+1}-x_k \geq 2 \delta_0\right]$ が成り立つと考えてもよい。このとき，(2)より
+                $$
+                \begin{aligned}
+                \int_0^{\infty}|f(x)|^p d x & \geq \sum_{k=1}^{\infty} \int_{x_k-\delta_0}^{x_k+\delta_0}|f(x)|^p d x \\
+                &  \gt \sum_{k=1}^{\infty} \int_{x_k-\delta_0}^{x_k+\delta_0}\left(\frac{\varepsilon_0}{2}\right)^p d x=\sum_{k=1}^{\infty}\left(\frac{\varepsilon_0}{2}\right)^p 2 \delta_0=\infty
+                \end{aligned}
+                $$
+                
+                となる。これは $\int_0^{\infty}|f(x)|^p d x$ が収束することに矛盾する.
+                (別解) $g(x)=|f(x)|^p$ とおくと $\int_0^{\infty}|g(x)| d x=\int_0^{\infty}|f(x)|^p d x \lt \infty$ であるから, 例題 4.13 により $\lim _{x \rightarrow \infty} g(x)=\lim _{x \rightarrow \infty}|f(x)|^p=0$ が成り立つ.したがって, $\lim _{x \rightarrow \infty}|f(x)|^p=0 \Longrightarrow$ $\lim _{x \rightarrow \infty} f(x)=0$ を示せばよい (以下略).
+                
+                演習問題 (116 頁)
+                4.1. 条件より $f(a) \geq M$ かつ $f(b) \geq M$ を示せばよい. 背理法で示す. $f(a) \lt M$ または $f(b) \lt M$ と仮定する。 $f(a) \lt M$ の場合， $f(x)$ の $[a, b]$ での連続性より $x=a$ で連続である から, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta(\varepsilon) \gt 0,{ }^{\forall} x \in[a, b][x-a \lt \delta(\varepsilon) \Longrightarrow|f(x)-f(a)| \lt \varepsilon]$ が成り立つ. $M-f(a) \gt 0$ であるから, $\delta_0=\delta(M-f(a)), b_0=\min \left\{a+\delta_0, b\right\}$ とおくと. 上式より
+                $$
+                a \lt x \lt b_0 \Longrightarrow x-a \lt \delta_0 \Longrightarrow f(x) \leq|f(x)-f(a)|+f(a) \lt M
+                $$
+                
+                が成り立つ。これは任意の $x \in(a, b)$ に対して $f(x) \gt M$ であることに矛盾する. $f(b) \lt M$ の場合も同様にして矛盾が得られる。
+                4.2. 背理法で示す。 $f(0) \neq 0$ と仮定する. $f(x) の \mathbb{R}$ での連続性より $x=0$ で連続であるか ら, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta(\varepsilon) \gt 0,{ }^{\forall} x \in \mathbb{R}[|x| \lt \delta(\varepsilon) \Longrightarrow|f(x)-f(0)| \lt \varepsilon]$ が成り立つ. $f(0) \gt 0$ の場合, $\delta_0=\delta(f(0) / 2)$ とおくと, 上式より
+                $$
+                -\delta_0 \lt x \lt 0 \Longrightarrow|x| \lt \delta_0 \Longrightarrow|f(x)-f(0)| \lt \frac{f(0)}{2} \Longrightarrow 0 \lt \frac{f(0)}{2} \lt f(x) \lt \frac{3}{2} f(0)
+                $$
+                
+                が成り立つ. よって $x \in\left(-\delta_0, 0\right)$ に対して $x f(x) \lt 0$ となり, これは任意の $x \in \mathbb{R} \backslash\{0\}$ に 対して $x f(x) \gt 0$ であることに矛盾する。 $f(0) \lt 0$ の場合も同様にして矛盾が得られる.
+                4.3. $f(x)$ は $I$ で一様連続であるから, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta_1(\varepsilon) \gt 0 .{ }^{\nabla} x \in I,{ }^{\forall} \tilde{x} \in I[\mid x-$ $\left.\tilde{x}\left| \lt \delta_1(\varepsilon) \Longrightarrow\right| f(x)-f(\tilde{x}) \mid \lt \varepsilon\right]$ が成り立つ. また $g(x)$ は Jで一様連続であるから， ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta_2(\varepsilon) \gt 0,{ }^{\forall} x \in J,{ }^{\forall} \tilde{x} \in J\left[|x-\tilde{x}| \lt \delta_2(\varepsilon) \Longrightarrow g(x)-g(\tilde{x}) \mid \lt \varepsilon\right]$ が成り立 つ. 任意の $\varepsilon \gt 0$ に対して, $\delta(\varepsilon)=\delta_1\left(\delta_2(\varepsilon)\right)$ と定めると
+                $$
+                |x-\tilde{x}| \lt \delta(\varepsilon) \Longrightarrow|f(x)-f(\tilde{x})| \lt \delta_2(\varepsilon) \Longrightarrow|g(f(x))-g(f(\tilde{x}))| \lt \varepsilon
+                $$
+                
+                が成り立つので, $g(f(x))$ は $I$ で一様連続である.
+                4.4.（1）与えられた命題は成り立たない。例えば， $f(x)=x は[0, \infty)$ で一様連続であるが， $\{f(x)\}^2=x^2$ は $[0, \infty)$ で一様連続でない.
+                (2) $|f(x)|=\sqrt{\{f(x)\}^2}$ であることに注意しよう。例 4.9 により $g(x)=\sqrt{x}$ は $[0, \infty)$ で一様連続であり，仮定より$\{f(x)\}^2$は$[0, \infty)$で一様連続であるから，(1)により，合成関数$g(\{f(x)\}^2) = \sqrt{\{f(x)\}^2} = |f(x)|$も$[0, \infty)$で一様連続である。</p>
+        </div>
+
+        
+        <div class="def ">
+            <span class="def-t ">
+                <h4>5</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>問 題 解 答
+                199
+                が成り立つので，再びコーシーの収束定理（定理 3.1）を用いると， $\lim _{x \rightarrow \infty} f(x)$ は収束する。ま た $f(x)$ は $[0, \infty)$ で微分可能であるから，もちろん $[0, \infty)$ で連続である.よって，命題 4.1 （演習問題 4.6）により， $f(x)$ は $[0, \infty)$ で一様連続となる。さらに， $\int_0^{\infty}|f(\xi)| d \xi$ が収束する ので，例題 4.13 を用いると， $\lim _{x \rightarrow \infty} f(x)=0$ が得られる.
+                4.8. 背理法で示す. $\lim _{x \rightarrow \infty} f(x) \neq 0$ と仮定すると, 例題 3.5 の (3.2) より ${ }^{\exists} \varepsilon_0 \gt 0, \exists\left\{x_k\right\} \subset$ $I=[0, \infty)\left[x_k \geq k \wedge\left|f\left(x_k\right)\right| \geq \varepsilon_0\right] \cdots$ (1) が成り立つ. $f(x)$ は $I$ で一様連続であるから
+                $$
+                { }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta(\varepsilon) \gt 0,{ }^{\forall} x \in I,{ }^{\forall} \tilde{x} \in I[|x-\tilde{x}| \lt \delta(\varepsilon) \Longrightarrow|f(x)-f(\tilde{x})| \lt \varepsilon]
+                $$
+                
+                が成り立つ. 特に $\delta_0=\delta\left(\varepsilon_0 / 2\right)$ とおくと, 上式より $|x-\tilde{x}| \lt \delta_0 \Longrightarrow|f(x)-f(\tilde{x})| \lt \varepsilon_0 / 2$ なの で, 演習問題 4.1 の結果より ${ }^{\forall} x \in I,{ }^{\forall} \tilde{x} \in I\left[|x-\tilde{x}| \leq \delta_0 \Longrightarrow|f(x)-f(\tilde{x})| \leq \varepsilon_0 / 2\right] \cdots$ (2) が成り立つ.また $\int_0^{\infty} f(\xi) d \xi=\lim _{x \rightarrow \infty} \int_0^x f(\xi) d \xi$ が収束するので, コーシーの収束定理（定理 3.1）により
+                $$
+                { }^{\forall} \varepsilon \gt 0,{ }^{\exists} X(\varepsilon) \gt 0,{ }^{\forall} x \in I, \quad{ }^{\forall} \tilde{x} \in I\left[x \gt \tilde{x} \geq X(\varepsilon) \Longrightarrow\left|\int_{\tilde{x}}^x f(\xi) d \xi\right| \lt \varepsilon\right] \ldots
+                $$
+                
+                が成り立つ。
+                さて, $k_0=\left[X\left(\varepsilon_0 \delta_0 / 2\right)\right]+1$ ([ ] はガウス記号) とおくと, (1) より $x_{k_0} \geq k_0 \gt X\left(\varepsilon_0 \delta_0 / 2\right) \wedge$ $\left|f\left(x_{k_0}\right)\right| \geq \varepsilon_0$ が得られる.よって, (3)において $x=x_{k_0}+\delta_0, \tilde{x}=x_{k_0}$ とおくと
+                $$
+                \begin{aligned}
+                x_{k_0}+\delta_0 \gt x_{k_0} \gt X\left(\frac{\varepsilon_0 \delta_0}{2}\right) & \Longrightarrow\left|\int_{x_{k_0}}^{x_{k_0}+\delta_0} f(\xi) d \xi\right| \lt \frac{\varepsilon_0 \delta_0}{2} \\
+                & \Longrightarrow-\frac{\varepsilon_0 \delta_0}{2} \lt \int_{x_{k_0}}^{x_{k_0}+\delta_0} f(\xi) d \xi \lt \frac{\varepsilon_0 \delta_0}{2} \cdots \text { (4) }
+                \end{aligned}
+                $$
+                
+                が成り立つ。一方, $\left|f\left(x_{k_0}\right)\right| \geq \varepsilon_0$ であるから, $f\left(x_{k_0}\right) \geq \varepsilon_0$ の場合, (2)より $x_{k_0} \leq x \leq x_{k_0}+$ $\delta_0 \Longrightarrow\left|x-x_{k_0}\right| \leq \delta_0 \Longrightarrow\left|f(x)-f\left(x_{k_0}\right)\right| \leq \varepsilon_0 / 2 \Longrightarrow f(x) \geq f\left(x_{k_0}\right)-\varepsilon_0 / 2 \geq \varepsilon_0 / 2$ が成り立つ。このとき
+                $$
+                \int_{x_{k_0}}^{x_{k_0}+\delta_0} f(\xi) d \xi \geq \int_{x_{k_0}}^{x_{k_0}+\delta_0} \frac{\varepsilon_0}{2} d \xi=\frac{\varepsilon_0 \delta_0}{2}
+                $$
+                
+                となり，これは (4)に矛盾する。 $f\left(x_{k_0}\right) \leq-\varepsilon_0$ の場合も同様にして矛盾が得られる。
+                4.9. (1) 背理法で示す. $f\left(x_0\right) \lt 0$ となる $x_0 \in[0, \infty)$ が存在すると仮定する. $f(x)$ の非増加性により，任意の $x \in\left[x_0, \infty\right)$ に対して
+                $$
+                \int_0^x f(\xi) d \xi \leq \int_0^{x_0} f(\xi) d \xi+\int_{x_0}^x f\left(x_0\right) d \xi=\int_0^{x_0} f(\xi) d \xi+f\left(x_0\right)\left(x-x_0\right)
+                $$
+                
+                が成り立つ. ここで $x \in\left[x_0, \infty\right)$ は任意だら, 上式で $x \rightarrow \infty$ とすると $\int_0^x f(\xi) d \xi \rightarrow-x$ となり，これは $\int_0^{\infty} f(\xi) d \xi$ が収束することに矛盾する.
+                (2) $\int_0^{\infty} f(\xi) d \xi=\lim _{x \rightarrow \infty} \int_0^x f(\xi) d \xi$ が収束するので, コーシーの収束定理（定理 3.1） 上 の結果より</p>
+        </div>
+
+        
+        <div class="def ">
+            <span class="def-t ">
+                <h4>6</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>問 題 解 答
+                199
+                が成り立つので，再びコーシーの収束定理（定理 3.1）を用いると， $\lim _{x \rightarrow \infty} f(x)$ は収束する。ま た $f(x)$ は $[0, \infty)$ で微分可能であるから，もちろん $[0, \infty)$ で連続である.よって，命題 4.1 （演習問題 4.6）により， $f(x)$ は $[0, \infty)$ で一様連続となる。さらに， $\int_0^{\infty}|f(\xi)| d \xi$ が収束する ので，例題 4.13 を用いると， $\lim _{x \rightarrow \infty} f(x)=0$ が得られる.
+                4.8. 背理法で示す. $\lim _{x \rightarrow \infty} f(x) \neq 0$ と仮定すると, 例題 3.5 の (3.2) より ${ }^{\exists} \varepsilon_0 \gt 0, \exists\left\{x_k\right\} \subset$ $I=[0, \infty)\left[x_k \geq k \wedge\left|f\left(x_k\right)\right| \geq \varepsilon_0\right] \cdots$ (1) が成り立つ. $f(x)$ は $I$ で一様連続であるから
+                $$
+                { }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta(\varepsilon) \gt 0,{ }^{\forall} x \in I,{ }^{\forall} \tilde{x} \in I[|x-\tilde{x}| \lt \delta(\varepsilon) \Longrightarrow|f(x)-f(\tilde{x})| \lt \varepsilon]
+                $$
+                
+                が成り立つ. 特に $\delta_0=\delta\left(\varepsilon_0 / 2\right)$ とおくと, 上式より $|x-\tilde{x}| \lt \delta_0 \Longrightarrow|f(x)-f(\tilde{x})| \lt \varepsilon_0 / 2$ なの で, 演習問題 4.1 の結果より ${ }^{\forall} x \in I,{ }^{\forall} \tilde{x} \in I\left[|x-\tilde{x}| \leq \delta_0 \Longrightarrow|f(x)-f(\tilde{x})| \leq \varepsilon_0 / 2\right] \cdots$ (2) が成り立つ.また $\int_0^{\infty} f(\xi) d \xi=\lim _{x \rightarrow \infty} \int_0^x f(\xi) d \xi$ が収束するので, コーシーの収束定理（定理 3.1）により
+                $$
+                { }^{\forall} \varepsilon \gt 0,{ }^{\exists} X(\varepsilon) \gt 0,{ }^{\forall} x \in I, \quad{ }^{\forall} \tilde{x} \in I\left[x \gt \tilde{x} \geq X(\varepsilon) \Longrightarrow\left|\int_{\tilde{x}}^x f(\xi) d \xi\right| \lt \varepsilon\right] \ldots
+                $$
+                
+                が成り立つ。
+                さて, $k_0=\left[X\left(\varepsilon_0 \delta_0 / 2\right)\right]+1$ ([ ] はガウス記号) とおくと, (1) より $x_{k_0} \geq k_0 \gt X\left(\varepsilon_0 \delta_0 / 2\right) \wedge$ $\left|f\left(x_{k_0}\right)\right| \geq \varepsilon_0$ が得られる.よって, (3)において $x=x_{k_0}+\delta_0, \tilde{x}=x_{k_0}$ とおくと
+                $$
+                \begin{aligned}
+                x_{k_0}+\delta_0 \gt x_{k_0} \gt X\left(\frac{\varepsilon_0 \delta_0}{2}\right) & \Longrightarrow\left|\int_{x_{k_0}}^{x_{k_0}+\delta_0} f(\xi) d \xi\right| \lt \frac{\varepsilon_0 \delta_0}{2} \\
+                & \Longrightarrow-\frac{\varepsilon_0 \delta_0}{2} \lt \int_{x_{k_0}}^{x_{k_0}+\delta_0} f(\xi) d \xi \lt \frac{\varepsilon_0 \delta_0}{2} \cdots \text { (4) }
+                \end{aligned}
+                $$
+                
+                が成り立つ。一方, $\left|f\left(x_{k_0}\right)\right| \geq \varepsilon_0$ であるから, $f\left(x_{k_0}\right) \geq \varepsilon_0$ の場合, (2)より $x_{k_0} \leq x \leq x_{k_0}+$ $\delta_0 \Longrightarrow\left|x-x_{k_0}\right| \leq \delta_0 \Longrightarrow\left|f(x)-f\left(x_{k_0}\right)\right| \leq \varepsilon_0 / 2 \Longrightarrow f(x) \geq f\left(x_{k_0}\right)-\varepsilon_0 / 2 \geq \varepsilon_0 / 2$ が成り立つ。このとき
+                $$
+                \int_{x_{k_0}}^{x_{k_0}+\delta_0} f(\xi) d \xi \geq \int_{x_{k_0}}^{x_{k_0}+\delta_0} \frac{\varepsilon_0}{2} d \xi=\frac{\varepsilon_0 \delta_0}{2}
+                $$
+                
+                となり，これは (4)に矛盾する。 $f\left(x_{k_0}\right) \leq-\varepsilon_0$ の場合も同様にして矛盾が得られる。
+                4.9. (1) 背理法で示す. $f\left(x_0\right) \lt 0$ となる $x_0 \in[0, \infty)$ が存在すると仮定する. $f(x)$ の非増加性により，任意の $x \in\left[x_0, \infty\right)$ に対して
+                $$
+                \int_0^x f(\xi) d \xi \leq \int_0^{x_0} f(\xi) d \xi+\int_{x_0}^x f\left(x_0\right) d \xi=\int_0^{x_0} f(\xi) d \xi+f\left(x_0\right)\left(x-x_0\right)
+                $$
+                
+                が成り立つ. ここで $x \in\left[x_0, \infty\right)$ は任意だら, 上式で $x \rightarrow \infty$ とすると $\int_0^x f(\xi) d \xi \rightarrow-x$ となり，これは $\int_0^{\infty} f(\xi) d \xi$ が収束することに矛盾する.
+                (2) $\int_0^{\infty} f(\xi) d \xi=\lim _{x \rightarrow \infty} \int_0^x f(\xi) d \xi$ が収束するので, コーシーの収束定理（定理 3.1） 上 の結果より</p>
+        </div>
+
+        
+        <div class="def ">
+            <span class="def-t ">
+                <h4>7</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>200
+                問 題 解 答
+                $$
+                { }^{\forall} \varepsilon \gt 0,{ }^{\exists} X_1(\varepsilon) \gt 0,{ }^{\forall} x \in I,{ }^{\forall} \tilde{x} \in I\left[x \geq \tilde{x} \geq X_1(\varepsilon) \Longrightarrow \int_{\tilde{x}}^x f(\xi) d \xi \lt \varepsilon\right]
+                $$
+                
+                が成り立つ. 特に $\tilde{x}=X_1(\varepsilon / 2)$ とおくと, 上式より $x \geq X_1(\varepsilon / 2) \Longrightarrow \int_{X_1(\varepsilon / 2)}^x f(\xi) d \xi \lt \varepsilon / 2$ が得られる。 $f(x)$ の非増加性により
+                $$
+                x \geq X_1\left(\frac{\varepsilon}{2}\right) \Longrightarrow\left(x-X_1\left(\frac{\varepsilon}{2}\right)\right) f(x)=\int_{X_1(\varepsilon / 2)}^x f(x) d \xi \leq \int_{X_1(\varepsilon / 2)}^x f(\xi) d \xi \lt \frac{\varepsilon}{2}
+                $$
+                
+                すなわち, $x \geq X_1(\varepsilon / 2) \Longrightarrow x f(x) \lt \varepsilon / 2+X_1(\varepsilon / 2) f(x) \cdots$ (1) が成り立つ.ところで, (1) の結果と例題 4.13 を用いると $\lim _{x \rightarrow \infty} f(x)=0$ であるから ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} X_2(\varepsilon) \gt 0,{ }^{\forall} x \in$ $I\left[x \geq X_2(\varepsilon) \Longrightarrow f(x) \lt \varepsilon\right] \cdots$ (2) が成り立つ.よって，任意の $\varepsilon \gt 0$ に対して， $X(\varepsilon)=\max \left\{X_1(\varepsilon / 2), X_2\left(\varepsilon /\left(2 X_1(\varepsilon / 2)\right)\right)\right\}$ と定めると, (1), (2)より
+                $$
+                x \geq X(\varepsilon) \Longrightarrow|x f(x)|=x f(x) \lt \frac{\varepsilon}{2}+X_1\left(\frac{\varepsilon}{2}\right) \cdot \frac{\varepsilon}{2 X_1(\varepsilon / 2)}=\varepsilon
+                $$
+                
+                が得られるので, $\lim _{x \rightarrow \infty} x f(x)=0$ が成り立つ。
+                第 5 章 関数列の一様収束
+                
+                問 5.1. 任意の $\varepsilon \gt 0$ に対して， $N(\varepsilon)=[1 / \varepsilon]+1$ （[ ] はガウス記号）と定めると，任意の $x \in[0, \infty)$ と任意の $n \in \mathbb{N}$ に対して
+                $$
+                n \geq N(\varepsilon) \Longrightarrow\left|f_n(x)-\sin x\right|=\frac{1}{n} \leq \frac{1}{N(\varepsilon)} \lt \frac{1}{1 / \varepsilon}=\varepsilon
+                $$
+                
+                が成り立つので, $\left\{f_n\right\}$ は $[0, \infty)$ で $\sin x$ に一様収束する.
+                問 5.2. 任意の $\varepsilon \gt 0$ に対して， $N(\varepsilon)=[1 / \varepsilon]+1$ （[ ] はガウス記号）と定めると，任意の $x \in[0, \infty)$ と任意の $n \in \mathbb{N}$ に対して
+                $$
+                n \geq N(\varepsilon) \Longrightarrow\left|f_n(x)-0\right|=\frac{1}{n}\left|\sin x^2\right| \leq \frac{1}{N(\varepsilon)} \lt \frac{1}{1 / \varepsilon}=\varepsilon
+                $$
+                
+                が成り立つので, $\left\{f_n\right\}$ は $[0, \infty)$ で 0 に一様収束する.
+                問 5.3. 背理法で示す. $\left\{f_n\right\}$ は $[0,1]$ で $f(x)=\left\{\begin{array}{ll}0 & (0 \leq x \lt 1) \\ 1 & (x=1)\end{array}\right.$ に一様収束すると仮定す ると, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} N(\varepsilon) \in \mathbb{N},{ }^{\forall} x \in[0,1],{ }^{\forall} n \in \mathbb{N}\left[n \geq N(\varepsilon) \Longrightarrow\left|f_n(x)-f(x)\right| \lt \varepsilon\right]$ が成り立つ. 上式で $\varepsilon=\varepsilon_0 \in(0,1), n=N\left(\varepsilon_0\right)$ ととると, 任意の $x \in[0,1)$ に対して $\left|f_{N\left(\varepsilon_0\right)}(x)-f(x)\right|=x^{N\left(\varepsilon_0\right)} \lt \varepsilon_0 \cdots$ (1) が成り立つ.ここで $x \in[0,1)$ は任意たから, (1) で $x \rightarrow 1$ とすると $1 \leq \varepsilon_0$ となり， $0 \lt \varepsilon_0 \lt 1$ に矛盾する.したがって， $\left\{f_n\right\}$ は $[0,1]$ で一様収束しない。
+                
+                問 5.4. 任意の $x \in[0,1]$ に対して $0 \leq x^n / n \leq 1 / n \rightarrow 0(n \rightarrow \infty)$ であるから, $\lim _{n \rightarrow \infty} f_n(x)=$ 0 となる. 任意の $\varepsilon \gt 0$ に対して, $N(\varepsilon)=[1 / \varepsilon]+1$ （[ ] はガウス記号）と定めると，任意の $x \in[0,1]$ と任意の $n \in \mathbb{N}$ に対して
+                $$
+                n \geq N(\varepsilon) \Longrightarrow\left|f_n(x)-0\right|=\frac{x^n}{n} \leq \frac{1}{N(\varepsilon)} \lt \frac{1}{1 / \varepsilon}=\varepsilon
+                $$</p>
+        </div>
+
+        
+        <div class="def ">
+            <span class="def-t ">
+                <h4>8</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>が成り立つので, $\left\{f_n\right\}$ は $[0,1]$ で 0 に一様収束する.
+                問 5.5. 任意の $x \in[a, b]$ と任意の $n \in \mathbb{N}$ に対して, $f_n(a)=0$ より
+                $$
+                \left|f_n(x)\right|=\left|f_n(x)-f_n(a)\right|=\left|\int_a^x f_n^{\prime}(\xi) d \xi\right| \leq \int_a^x\left|f_n^{\prime}(\xi)\right| d \xi \leq \int_a^b\left|f_n^{\prime}(\xi)\right| d \xi
+                $$
+                
+                が成り立つ. ここで $c_n=\int_a^b\left|f_n^{\prime}(\xi)\right| d \xi$ とおくと, ${ }^{\forall} x \in[a, b],{ }^{\forall} n \in \mathbb{N}\left[\left|f_n(x)\right| \leq c_n\right]$ かつ $c_n \rightarrow 0(n \rightarrow \infty)$ であるから, 例題 5.1 により, $\left\{f_n\right\}$ は $[a, b]$ で 0 に一様収束する.
+                
+                問 5.6. $c_1=0$ または $c_2=0$ のときは例題 2.1 と同様に示せるので, $c_1 \neq 0$ かつ $c_2 \neq 0$ の 場合を考えればよい。 $\left\{f_n\right\}$ と $\left\{g_n\right\}$ が $I$ でそれぞれ $f$ と $g$ に一様収束するので
+                $$
+                \begin{aligned}
+                & { }^{\forall} \varepsilon \gt 0,{ }^{\exists} N_1(\varepsilon) \in \mathbb{N},{ }^{\forall} x \in I,{ }^{\forall} n \in \mathbb{N}\left[n \geq N_1(\varepsilon) \Longrightarrow\left|f_n(x)-f(x)\right| \lt \varepsilon\right] \\
+                & { }^{\forall} \varepsilon \gt 0,{ }^{\exists} N_2(\varepsilon) \in \mathbb{N},{ }^{\forall} x \in I,{ }^{\forall} n \in \mathbb{N}\left[n \geq N_2(\varepsilon) \Longrightarrow\left|g_n(x)-g(x)\right| \lt \varepsilon\right]
+                \end{aligned}
+                $$
+                
+                が成り立つ。任意の $\varepsilon \gt 0$ に対して, $N(\varepsilon)=\max \left\{N_1\left(\varepsilon /\left(2\left|c_1\right|\right)\right), N_2\left(\varepsilon /\left(2\left|c_2\right|\right)\right)\right\}$ と定める と, 任意の $x \in I$ と任意の $n \in \mathbb{N}$ に対して，上式より
+                $$
+                \begin{aligned}
+                n \geq N(\varepsilon) \Longrightarrow & \left|c_1 f_n(x)+c_2 g_n(x)-\left(c_1 f(x)+c_2 g(x)\right)\right| \\
+                & \leq\left|c_1\right|\left|f_n(x)-f(x)\right|+\left|c_2\right|\left|g_n(x)-g(x)\right| \lt \left|c_1\right| \cdot \frac{\varepsilon}{2\left|c_1\right|}+\left|c_2\right| \cdot \frac{\varepsilon}{2\left|c_2\right|}=\varepsilon
+                \end{aligned}
+                $$
+                
+                が成り立つので, $\left\{c_1 f_n+c_2 g_n\right\}$ は $I$ で $c_1 f+c_2 g$ に一様収束する.
+                問 5.7. (1) $f_n(0)=0$ かつ任意の $x \gt 0$ に対して $\lim _{n \rightarrow \infty} f_n(x)=\lim _{n \rightarrow \infty} n x / e^{n x}=0$ であ るから, $\left\{f_n\right\}$ は $I$ で $f(x)=0$ に各点収束する. ここで $f_n^{\prime}(x)=n(1-n x) e^{n x}$ より $f_n(x)$ は $x=1 / n$ で最大値 $f_n(1 / n)=1 / e$ をとる. $\varepsilon_0=1 / e, x_k=1 / k, n_k=k$ とおくと $\left|f_{n_k}(x)-f(x)\right|=f_k(1 / k)=1 / e=\varepsilon_0$ となり, 例題 5.4 の (5.2) が成り立つので, $\left\{f_n\right\}$ は $I$ で $f(x)=0$ に一様収束しない。
+                (2) $f_n(0)=0$ かつ任意の $x \gt 0$ に対して $\lim _{n \rightarrow \infty} f_n(x)=\lim _{n \rightarrow \infty}(x / n) /\left(1 / n^2+x^2\right)=0$ であ るから, $\left\{f_n\right\}$ は $I$ で $f(x)=0$ に各点収束する. ここで $f_n^{\prime}(x)=n\left(1-n^2 x^2\right) /\left(1+x^2 x^2\right)^2$ より $f_n(x)$ は $x=1 / n$ で最大値 $f_n(1 / n)=1 / 2$ をとる. $\varepsilon_0=1 / 2, x_k=1 / k, n_k=k$ と おくと $\left|f_{n_k}(x)-f(x)\right|=f_k(1 / k)=1 / 2=\varepsilon_0$ となり, 例題 5.4 の (5.2) が成り立つので, $\left\{f_n\right\}$ は $I$ で $f(x)=0$ に一様収束しない。
+                
+                問 5.8. 任意の $x \in(0,1]$ に対して $x \gt 1 / N(x)$ をみたす $N(x) \in \mathbb{N}$ をとると, 任意の $n \geq N(x)$ に対して $f_n(x)=0$ であるから, $\lim _{n \rightarrow \infty} f_n(x)=0$ となる. また $f_n(0)=1$ なの で, $f(x)=\left\{\begin{array}{ll}1 & (x=0) \\ 0 & (0 \lt x \leq 1)\end{array}\right.$ とすると, $\left\{f_n\right\}$ は $I=[0,1]$ で $f$ に各点収束する. $f_n(x)$ は $I$ で連続であるが， $f(x)$ は $I$ で連続でないので，例題 5.6 の (5.6) により, $\left\{f_n\right\}$ は $I$ で一様収束しない。
+                
+                問 5.9. 任意の $x \in(0,1]$ に対して $x \gt 1 / N(x)$ をみたす $N(x) \in \mathbb{N}$ をとると, 任意の $n \geq N(x)$ に対して $f_n(x)=0$ であるから, $\lim _{n \rightarrow \infty} f_n(x)=0$ となる.また $f_n(0)=0$ なの で, $\left\{f_n\right\}$ は $I=[0,1]$ で $f(x)=0$ に各点収束する. $f_n(x)$ は $I$ で連続であり, $\int_0^1 f_n(x) d x=$ $(1 / 2) \cdot(1 / n) \cdot n=1 / 2$ より $\lim _{n \rightarrow \infty}\left(\int_0^1 f_n(x) d x\right)=1 / 2 \neq 0=\int_0^1\left(\lim _{n \rightarrow \infty} f_n(x)\right) d x$ である から, 例題 5.8 の (5.8) により, $\left\{f_n\right\}$ は $I$ で一様収束しない.
+                
+                問 5.10. (1) $\varphi_k(x)=(-1)^{k-1}(\sin k x) / k^2$ とおくと, 任意の $x \in \mathbb{R}$ に対して $\left|\varphi_k(x)\right| \leq 1 / k^2$</p>
+        </div>
+
+        
+        <div class="def ">
+            <span class="def-t ">
+                <h4>9</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>202
+                問 題 解 答
+                であり, $\sum_{k=1}^{\infty} 1 / k^2$ は収束するから, ワイエルシュトラスの $M$ 判定法により, $\sum_{k=1}^{\infty} \varphi_k(x)$ は $I$ で一様収束かつ絶対収束する。
+                (2) $\varphi_k(x)=x^k$ とおくと, 任意の $x \in[-r, r]$ に対して $\left|\varphi_k(x)\right| \leq r^k$ であり, $0 \lt r \lt 1$ より $\sum_{k=1}^{\infty} r^k=1 /(1-r)$ であるから, ワイエルシュトラスの $M$ 判定法により, $\sum_{k=1}^{\infty} \varphi_k(x)$ は $[-r, r]$ で一様収束かつ絶対収束する.
+                
+                問 5.11. $\sum_{k=1}^{\infty}(-1)^k\left(x^2+k\right) / k^2=\sum_{k=1}^{\infty}(-1)^k / k \cdot\left(x^2+k\right) / k$ と変形できる. $a_k=$ $(-1)^k / k, f_k(x)=\left(x^2+k\right) / k$ とおくと, $\sum_{k=1}^{\infty} a_k=-\log 2$ かつ, 任意の $x \in[a, b]$ に対 して
+                $$
+                f_k(x)=\frac{x^2}{k}+1 \gt \frac{x^2}{k+1}+1=f_{k+1}(x) \geq 0, \quad f_1(x)=x^2+1 \leq \max \left\{a^2+1, b^2+1\right\}
+                $$
+                
+                が成り立つ。よって，例題 5.10 により， $\sum_{k=1}^{\infty}(-1)^k\left(x^2+k\right) / k^2$ は $[a, b]$ で一様収束する.
+                問 5.12. (1) $f_n^{\prime}(x)=n\left(1-n^2 x^2\right) /\left(1+n^2 x^2\right)^2$ より，任意の $x \in I$ と任意の $n \in \mathbb{N}$ に対し て $\left|f_n(x)\right|=f_n(x) \leq f_n(1 / n)=1 / 2$ であるから, $\left\{f_n\right\}$ は $I$ で一様有界である.
+                (2) $f_n^{\prime}(x)=n(1-n x) e^{-n x}$ より，任意の $x \in I$ と任意の $n \in \mathbb{N}$ に対して $\left|f_n(x)\right|=f_n(x) \leq$ $f_n(1 / n)=1 / e$ であるから, $\left\{f_n\right\}$ は $I$ で一様有界である.
+                
+                問 5.13. $f(x)$ と $g(x)$ の $I$ での一様連続性より
+                $$
+                \begin{aligned}
+                & { }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta_1(\varepsilon) \gt 0,{ }^{\forall} x \in I,{ }^{\forall} \tilde{x} \in I\left[|x-\tilde{x}| \lt \delta_1(\varepsilon) \Longrightarrow|f(x)-f(\tilde{x})| \lt \varepsilon\right] \\
+                & { }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta_2(\varepsilon) \gt 0,{ }^{\forall} x \in I,{ }^{\forall} \tilde{x} \in I\left[|x-\tilde{x}| \lt \delta_2(\varepsilon) \Longrightarrow|g(x)-g(\tilde{x})| \lt \varepsilon\right]
+                \end{aligned}
+                $$
+                
+                が成り立つ。また $\left\{a_n\right\}$ は有界数列であるから, ${ }^{\exists} M \gt 0,{ }^{\forall} n \in \mathbb{N}\left[\left|a_n\right| \leq M\right]$ が成り立つ. よって, 任意の $\varepsilon \gt 0$ に対して, $\delta(\varepsilon)=\min \left\{\delta_1(\varepsilon / 2), \delta_2(\varepsilon /(2 M))\right\}$ と定めると, 任意の $n \in \mathbb{N}$ と任意の $x, \tilde{x} \in I$ に対して
+                $$
+                |x-\tilde{x}| \lt \delta_1(\varepsilon) \Longrightarrow\left|f_n(x)-f_n(\tilde{x})\right| \leq|f(x)-f(\tilde{x})|+\left|a_n\right||g(x)-g(\tilde{x})| \lt \frac{\varepsilon}{2}+M \cdot \frac{\varepsilon}{2 M}=\varepsilon
+                $$
+                
+                が成り立つので, $\left\{f_n\right\}$ は $I$ で同程度連続である.
+                問 5.14. (1) 任意の $\varepsilon \gt 0$ に対して, $\delta(\varepsilon)=\varepsilon$ と定めると, 任意の $n \in \mathbb{N}$ と任意の $x, \tilde{x} \in I$ に対して
+                $$
+                |x-\tilde{x}| \lt \delta(\varepsilon) \Longrightarrow\left|f_n(x)-f_n(\tilde{x})\right|=\left|\frac{x-\tilde{x}}{(n x+1)(n \tilde{x}+1)}\right| \leq|x-\tilde{x}| \lt \delta(\varepsilon)=\varepsilon
+                $$
+                
+                が成り立つので, $\left\{f_n\right\}$ は $I$ で同程度連続である.
+                (2) 任意の $\varepsilon \gt 0$ に対して, $\delta(\varepsilon)=\varepsilon$ と定めると, 任意の $n \in \mathbb{N}$ と任意の $x, \tilde{x} \in I$ に対して
+                $$
+                |x-\tilde{x}| \lt \delta(\varepsilon) \Longrightarrow\left|f_n(x)-f_n(\tilde{x})\right|=\left|\frac{n^2(x-\tilde{x})}{(x+n)(\tilde{x}+n)}\right| \leq \frac{n^2|x-\tilde{x}|}{n^2} \lt \delta(\varepsilon)=\varepsilon
+                $$
+                
+                が成り立つので, $\left\{f_n\right\}$ は $I$ で同程度連続である.
+                問 5.15. (1) 任意の $x \in I$ と任意の $n \in \mathbb{N}$ に対して
+                $$
+                \left|f_n^{\prime}(x)\right|=\left|\frac{2 x \cos \left(n x^2\right)}{x+1}-\frac{\sin \left(n x^2\right)}{n(x+1)^2}\right| \leq \frac{2 x}{x+1}+\frac{1}{n(x+1)^2} \leq 3
+                $$
+                
+                であるから, $\left\{f_n^{\prime}\right\}$ は $I$ で一様有界である.よって, 例題 5.15 により, $\left\{f_n\right\}$ は $I$ で同程度連続である。</p>
+        </div>
+
+        <div class="def ">
+            <span class="def-t ">
+                <h4>10</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>問 題 解 答
+                203
+                (2) 任意の $x \in I$ と任意の $n \in \mathbb{N}$ に対して $\left|f_n^{\prime}(x)\right|=\left|e^{(\sin n x) / n} \cos n x\right| \leq e$ であるから, $\left\{f_n^{\prime}\right\}$ は $I$ で一様有界である.よって, 例題 5.15 により, $\left\{f_n\right\}$ は $I$ で同程度連続である.
+                
+                問 5.16. 任意の $\varepsilon \gt 0$ に対して, $\delta(\varepsilon)=\varepsilon / L$ と定めると, 任意の $n \in \mathbb{N}$ と任意の $x, \tilde{x} \in I$ に対して, 条件式より $|x-\tilde{x}| \lt \delta(\varepsilon) \Longrightarrow\left|f_n(x)-f_n(\tilde{x})\right| \leq L|x-\tilde{x}| \lt L \cdot \delta(\varepsilon)=\varepsilon$ が成 り立つ.したがって, $\left\{f_n\right\}$ は $I$ で同程度連続である。
+                
+                問 5.17. (5.15) $\Longrightarrow(5.14)$ の証明：(5.15) において $\delta$ は任意の正の数だら, 任意の $k \in \mathbb{N}$ に対して, $\delta=1 / k$ とおき, $n_{1 / k}, x_{1 / k}, \tilde{x}_{1 / k}$ を改めて $n_k, x_k, \tilde{x}_k$ と表すことにすると, (5.15) から直ちに (5.14) が得られる.
+                $(5.14) \Longrightarrow(5.15)$ の証明：任意の $\delta \gt 0$ に対して，自然数 $k$ を十分大きくすると $1 / k \lt \delta$ とできる.すなわち ${ }^{\forall} \delta \gt 0,{ }^{\exists} k(\delta) \in \mathbb{N}[1 / k(\delta) \lt \delta] \ldots$ (2) が成り立つ.この自然数 $k(\delta)$ に対して，(5.14) における $\left\{n_k\right\},\left\{x_k\right\} ，\left\{\tilde{x}_k\right\}$ の中からそれぞれ $n_{k(\delta)}, x_{k(\delta)}, \tilde{x}_{k(\delta)}$ を取り出 すと $\left|x_{k(\delta)}-\tilde{x}_{k(\delta)}\right| \lt 1 / k(\delta) \wedge\left|f_{n_{k(\delta)}}\left(x_{k(\delta)}\right)-f_{n_{k(\delta)}}\left(\tilde{x}_{k(\delta)}\right)\right| \geq \varepsilon_0 \cdots$ (3) が成り立つ. よって, 任意の $\delta \gt 0$ に対して, $n_\delta=n_{k(\delta)}, x_\delta=x_{k(\delta)}, \tilde{x}_\delta=\tilde{x}_{k(\delta)}$ と定めると, (2), (3)よ り ${ }^{\exists} \varepsilon_0 \gt 0,{ }^{\forall} \delta \gt 0,{ }^{\exists} n_\delta \in \mathbb{N},{ }^{\exists} x_\delta \in I,{ }^{\exists} \tilde{x}_\delta \in I\left[\left|x_\delta-\tilde{x}_\delta\right|=\left|x_{k(\delta)}-\tilde{x}_{k(\delta)}\right| \lt 1 / k(\delta) \lt \right.$ $\left.\delta \wedge\left|f_{n_\delta}\left(x_\delta\right)-f_{n_\delta}\left(\tilde{x}_\delta\right)\right| \geq \varepsilon_0\right]$ が成り立つので, (5.15) が得られる.
+                
+                問 5.18. 任意の $x \in I$ と任意の $n \in \mathbb{N}$ に対して $\left|f_n(x)\right| \leq 4 n^2 e^{-2 n} \leq 4 e^{-2},\left|f_n^{\prime}(x)\right|=$ $\left|2 n^2\left(x-n x^2\right) e^{-2 n x}\right|=2 n^2 x(n x-1) e^{-2 n x} \lt 2 n^3 x^2 e^{-2 n x} \leq 8 n^3 e^{-2 n} \lt 27 e^{-3}$ である から, $\left\{f_n\right\},\left\{f_n^{\prime}\right\}$ は $I$ で一様有界である.よって, 例題 5.15 により, $\left\{f_n\right\}$ は $I$ で同程度連続である。
+                
+                問 5.19. (1) 任意の $x \in(0, \pi)$ に対して $\lim _{n \rightarrow \infty}(\sin x) / n=0$ かつ $\lim _{\theta \rightarrow 0}\left(e^\theta-1\right) / \theta=1$ より
+                $$
+                f_n(x)=\sin x \frac{e^{(\sin x) / n}-1}{(\sin x) / n} \rightarrow \sin x \quad(n \rightarrow \infty)
+                $$
+                
+                が成り立つ.これと $f_n(0)=f_n(\pi)=0$ より, $\left\{f_n\right\}$ は $I$ で $\sin x$ に各点収束する. また, 任意の $x \in I$ と任意の $n \in \mathbb{N}$ に対して $\left|f_n^{\prime}(x)\right|=\left|e^{(\sin x) / n} \cos x\right| \leq e$ より $\left\{f_n^{\prime}\right\}$ は $I$ で一様有界であるから, 例題 5.15 により, $\left\{f_n\right\}$ は $I$ で同程度連続である.したがって, 例題 5.19 に より, $\left\{f_n\right\}$ は $I$ で $\sin x$ に一様収束する.
+                (2) 任意の $x \in(0,1]$ に対して $\lim _{n \rightarrow \infty} x / n=0$ かつ $\lim _{\theta \rightarrow 0}(\log (1+\theta)) / \theta=1$ より
+                $$
+                f_n(x)=x \frac{\log (1+x / n)}{x / n} \rightarrow x \quad(n \rightarrow \infty)
+                $$
+                
+                が成り立つ. これと $f_n(0)=0$ より, $\left\{f_n\right\}$ は $I$ で $x$ に各点収束する. また, 任意の $x \in I$ と 任意の $n \in \mathbb{N}$ に対して $\left|f_n^{\prime}(x)\right|=|1 /(1+x / n)| \leq 1$ より $\left\{f_n^{\prime}\right\}$ は $I$ で一様有界であるから,例題 5.15 により, $\left\{f_n^{\prime}\right\}$ は $I$ で同程度連続である. したがって, 例題 5.19 により, $\left\{f_n\right\}$ は $I$ で $x$ に一様収束する.
+                
+                演習問題 (165 頁)
+                5.1. 一般に, $f(x), g(x)$ が区間 $[a, b]$ でともに積分可能ならば, 次のシュワルツの不等式
+                $$
+                \int_a^b|f(x) g(x)| d x \leq\left(\int_a^b|f(x)|^2 d x\right)^{1 / 2}\left(\int_a^b|g(x)|^2 d x\right)^{1 / 2}
+                $$
+                
+                が成り立つ. 任意の $x \in[a, b]$ と任意の $n \in \mathbb{N}$ に対して, $f_n(a)=0$ と上式より
+                $$
+                \left|f_n(x)\right| \leq \int_a^x\left|f_n^{\prime}(\xi)\right| d \xi \leq \int_a^b\left|f_n^{\prime}(\xi)\right| d \xi \leq(b-a)^{1 / 2}\left(\int_a^b\left|f_n^{\prime}(\xi)\right|^2 d \xi\right)^{1 / 2}
+                $$</p>
+        </div>
+
+        <div class="def ">
+            <span class="def-t ">
+                <h4>11</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>204
+                問 題 解 答
+                が成り立つ. $c_n=(b-a)^{1 / 2}\left(\int_a^b\left|f_n^{\prime}(\xi)\right|^2 d \xi\right)^{1 / 2}$ とおくと, ${ }^{\forall} x \in[a, b],{ }^{\forall} n \in \mathbb{N}\left[\left|f_n(x)\right| \leq\right.$ $\left.c_n\right]$ かつ $c_n \rightarrow 0(n \rightarrow \infty)$ であるから, 例題 5.1 により, $\left\{f_n\right\}$ は $[a, b]$ で 0 に一様収束する.
+                5.2. $\left\{f_n\right\}$ は $I$ で $f$ に一様収束するから, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} N_0(\varepsilon) \in \mathbb{N},{ }^{\forall} x \in I,{ }^{\forall} n \in \mathbb{N}[n \geq$ $\left.N_0(\varepsilon) \Longrightarrow\left|f_n(x)-f(x)\right| \lt \varepsilon\right]$ が成り立つ.また $g(x)$ の $I$ での有界性より ${ }^{\exists} M \gt 0,{ }^{\forall} x \in$ $I[|g(x)| \leq M]$ が成り立つ. 任意の $\varepsilon \gt 0$ に対して, $N(\varepsilon)=N_0(\varepsilon / M)$ と定めると, 任意 の $x \in I$ と任意の $n \in \mathbb{N}$ に対して
+                $$
+                n \geq N(\varepsilon) \Longrightarrow\left|f_n(x) g(x)-f(x) g(x)\right|=\left|f_n(x)-f(x)\right||g(x)| \lt \frac{\varepsilon}{M} \cdot M=\varepsilon
+                $$
+                
+                が成り立つので, $\left\{f_n g\right\}$ は $I$ で $f g$ に一様収束する.
+                5.3. (1) 任意の $x \in I=[0,1)$ に対して, $\varphi_n(x)=1 /(n(1-x)) \rightarrow 0(n \rightarrow \infty)$ であるか ら, $\left\{\varphi_n\right\}$ は $I$ で $\varphi(x)=0$ に各点収束する.また, $\varepsilon_0=1, x_k=1-1 / k, n_k=k$ とおく と $\left|\varphi_{n_k}\left(x_k\right)-\varphi\left(x_k\right)\right|=\varphi_k(1-1 / k)=1=\varepsilon_0$ となり, 例題 5.4 の (5.2) が成り立つので, $\left\{\varphi_n\right\}$ は $I$ で 0 に一様収束しない。
+                (2) 区間 $I=[0,1)$ で $f_n(x)=1 / n, g_n(x)=1 /(1-x)+1 / n$ とすると, $\left|f_n(x)\right|=1 / n \rightarrow 0$, $\left|g_n(x)-1 /(1-x)\right| \leq 1 / n \rightarrow 0(n \rightarrow \infty)$ であるから, 例題 5.1 により, $\left\{f_n\right\}$ は $I$ で 0 に一様収束し, $\left\{g_n\right\}$ は $I$ で $1 /(1-x)$ に一様収束する. また, ${ }^{\forall} x \in I\left[\left|f_n(x)\right| \leq 1\right]$ より $\left\{f_n\right\}$ は $I$ で一様有界であるが, $\left|g_n(x)\right| \rightarrow \infty(x \rightarrow 1)$ より $\left\{g_n\right\}$ は $I$ で一様有界でない。このとき, $\left\{f_n g_n\right\}$ は $I$ で一様収束しないことを示そう。任意の $x \in I$ に対して $f_n(x) g_n(x)=1 /(n(1-x))+1 / n^2 \rightarrow 0$ $(n \rightarrow \infty)$ であるから, $\left\{f_n g_n\right\}$ は $I$ で $\varphi(x)=0$ に各点収束する. $\varepsilon_0=1, x_k=1-1 / k$, $n_k=k$ とおくと $\left|f_{n_k}(x) g_{n_k}\left(x_k\right)-\varphi\left(x_k\right)\right|=1+1 / k^2 \geq 1=\varepsilon_0$ となり, 例題 5.4 の (5.2) が成り立つので, $\left\{f_n g_n\right\}$ は $I$ で 0 に一様収束しない。
+                5.4. $\left\{f_n\right\},\left\{g_n\right\}$ はともに $I$ で一様収束するから，極限関数をそれぞれ $f, g$ とすると
+                $$
+                \begin{aligned}
+                & { }^{\forall} \varepsilon \gt 0,{ }^{\exists} N_1(\varepsilon) \in \mathbb{N},{ }^{\forall} x \in I,{ }^{\forall} n \in \mathbb{N}\left[n \geq N_1(\varepsilon) \Longrightarrow\left|f_n(x)-f(x)\right| \lt \varepsilon\right] \\
+                & { }^{\forall} \varepsilon \gt 0,{ }^{\exists} N_2(\varepsilon) \in \mathbb{N},{ }^{\forall} x \in I,{ }^{\forall} n \in \mathbb{N}\left[n \geq N_2(\varepsilon) \Longrightarrow\left|g_n(x)-g(x)\right| \lt \varepsilon\right]
+                \end{aligned}
+                $$
+                
+                が成り立つ。また， $\left\{f_n\right\},\left\{g_n\right\}$ はともに $I$ で一様有界であるから
+                $$
+                \begin{aligned}
+                & { }^{\exists} M_1 \gt 0,{ }^{\forall} x \in I,{ }^{\forall} n \in \mathbb{N}\left[\left|f_n(x)\right| \leq M_1\right] \\
+                & { }^{\exists} M_2 \gt 0,{ }^{\forall} x \in I,{ }^{\forall} n \in \mathbb{N}\left[\left|g_n(x)\right| \leq M_2\right]
+                \end{aligned}
+                $$
+                
+                が成り立つ。このとき, $\left\{f_n\right\}$ に例題 5.3 を用いると, ${ }^{\forall} x \in I\left[|f(x)| \leq M_1\right]$ が成り立つ. よって, 任意の $\varepsilon \gt 0$ に対して, $N(\varepsilon)=\max \left\{N_1\left(\varepsilon /\left(M_1+M_2\right)\right), N_2\left(\varepsilon /\left(M_1+M_2\right)\right)\right\}$ と定 めると，任意の $x \in I$ と任意の $n \in \mathbb{N}$ に対して
+                $$
+                \begin{aligned}
+                n \geq N(\varepsilon) \Longrightarrow\left|f_n(x) g_n(x)-f(x) g(x)\right| & \leq\left|g_n(x)\right|\left|f_n(x)-f(x)\right|+|f(x)|\left|g_n(x)-g(x)\right| \\
+                &  \lt M_2 \cdot \frac{\varepsilon}{M_1+M_2}+M_1 \cdot \frac{\varepsilon}{M_1+M_2}=\varepsilon
+                \end{aligned}
+                $$
+                
+                が成り立つので, $\left\{f_n g_n\right\}$ は $I$ で $f g$ に一様収束する。
+                5.5. 証明すべき必要十分条件を (C) とする. (必要性) $\left\{f_n\right\}$ が $I$ で一様収束するとする.そ の極限関数を $f(x)$ とすると, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} N_0(\varepsilon) \in \mathbb{N},{ }^{\forall} x \in I,{ }^{\forall} n \in \mathbb{N}\left[n \geq N_0(\varepsilon) \Longrightarrow\right.$ $\left.\left|f_n(x)-f(x)\right| \lt \varepsilon\right]$ が成り立つ. 任意の $\varepsilon \gt 0$ に対して, $N(\varepsilon)=N_0(\varepsilon / 2)$ と定めると
+                $$
+                m \gt n \geq N(\varepsilon) \Longrightarrow\left|f_m(x)-f_n(x)\right| \leq\left|f_m(x)-f(x)\right|+\left|f(x)-f_n(x)\right| \lt \frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon
+                $$</p>
+        </div>
+
+        <div class="def ">
+            <span class="def-t ">
+                <h4>12</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>
+            問 題 解 答
+            205
+            となり，(C) が成り立つ。
+            （十分性）(C) が成り立つならば， $\left\{f_n\right\}$ が $I$ で一様収束することを示す. (C) において $x \in I$ を任意に固定すると, $f_m(x), f_n(x)$ は実数になるから, 実数列 $\left\{f_n(x)\right\}$ に対してコーシーの 収束定理（定理 2.2）を用いると, 実数列 $\left\{f_n(x)\right\}$ は収束する. 実数列 $\left\{f_n(x)\right\}$ の極限值を $f(x)$ とすると, 関数 $f(x)$ が得られ, まず $f_n$ が $I$ で $f$ に各点収束することがわかる. $f_n$ が $I$ で $f$ に一様収束することを示そう. (C) より, 任意の $x \in I$ と任意の $m, n \in \mathbb{N}$ に対して
+            $$
+            m \gt n \geq N\left(\frac{\varepsilon}{2}\right) \Longrightarrow\left|f_m(x)-f_n(x)\right| \lt \frac{\varepsilon}{2} \cdots
+            $$
+
+            が成り立つ.また $\left\{f_n\right\}$ が $I$ で $f$ に各点収束するから
+            $$
+            { }^{\forall} \lt 0,{ }^{\forall} x \in I, \quad{ }^{\exists} N_0\left(\frac{\varepsilon}{2}, x\right) \in \mathbb{N},{ }^{\forall} n \in \mathbb{N}\left[n \geq N_0\left(\frac{\varepsilon}{2}, x\right) \Longrightarrow\left|f_n(x)-f(x)\right| \lt \frac{\varepsilon}{2}\right]
+            $$
+
+            が成り立つ. $N_0(\varepsilon / 2, x)$ はより大きい自然数でも構わないので, $N_0(\varepsilon / 2, x) \geq N(\varepsilon / 2)$ となるよ うに取り直しておく。式で $n=N_0(\varepsilon / 2, x)$ とおくと, $\left|f_{N_0(\varepsilon / 2, x)}(x)-f(x)\right| \lt \varepsilon / 2 \cdots$ (2) が成り立つ. よって, 任意の $\varepsilon \gt 0$ に対して, $\tilde{N}(\varepsilon)=N(\varepsilon / 2)$ と定めると, 任意の $x \in I$ と 任意の $n \in \mathbb{N}$ に対して，(1)，(2)より
+            $$
+            \begin{aligned}
+            n \geq \tilde{N}(\varepsilon) \Longrightarrow\left|f_n(x)-f(x)\right| & \leq\left|f_n(x)-f_{N_0(\varepsilon / 2, x)}(x)\right|+\left|f_{N_0(\varepsilon / 2, x)}(x)-f(x)\right| \\
+            &  \lt \frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon
+            \end{aligned}
+            $$
+
+            が成り立つので, $\left\{f_n\right\}$ は $I$ で $f$ に一様収束する.
+            5.6. $\left\{f_n\right\}$ が $I$ で一様収束するから，極限関数を $f$ とすると
+            $$
+            { }^{\forall} \varepsilon \gt 0,{ }^{\exists} N_0(\varepsilon) \in \mathbb{N},{ }^{\forall} x \in I,{ }^{\forall} n \in \mathbb{N}\left[n \geq N_0(\varepsilon) \Longrightarrow\left|f_n(x)-f(x)\right| \lt \varepsilon\right]
+            $$
+
+            が成り立つ。また $g(x)$ は $\mathbb{R}$ で一様連続であるから, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta(\varepsilon) \gt 0,{ }^{\forall} x \in \mathbb{R},{ }^{\forall} \tilde{x} \in \mathbb{R}[\mid x-$ $\tilde{x}| \lt \delta(\varepsilon) \Longrightarrow| g(x)-g(\tilde{x}) \mid \lt \varepsilon]$ が成り立つ. 任意の $\varepsilon \gt 0$ に対して, $N(\varepsilon)=N_0(\delta(\varepsilon))$ と定めると, 任意の $x \in \mathbb{R}$ と任意の $n \in \mathbb{N}$ に対して
+            $$
+            n \geq N(\varepsilon) \Longrightarrow\left|f_n(x)-f(x)\right| \lt \delta(\varepsilon) \Longrightarrow\left|g\left(f_n(x)\right)-g(f(x))\right| \lt \varepsilon
+            $$
+
+            が成り立つので, $\left\{g \circ f_n\right\}$ は $I$ で $g \circ f$ に一様収束する.
+            5.7. $\left\{f_n\right\}$ は $I$ で同程度連続であるから, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta_1(\varepsilon) \gt 0,{ }^{\forall} n \in \mathbb{N},{ }^{\forall} x \in I,{ }^{\forall} \tilde{x} \in$ $I\left[|x-\tilde{x}| \lt \delta_1(\varepsilon) \Longrightarrow\left|f_n(x)-f_n(\tilde{x})\right| \lt \varepsilon\right]$ が成り立つ. また $g(x)$ は $\mathbb{R}$ で一様連続であ るから, ${ }^{\forall} \varepsilon \gt 0,{ }^{\exists} \delta_2(\varepsilon) \gt 0,{ }^{\forall} x \in \mathbb{R},{ }^{\forall} \tilde{x} \in \mathbb{R}\left[|x-\tilde{x}| \lt \delta_2(\varepsilon) \Longrightarrow|g(x)-g(\tilde{x})| \lt \varepsilon\right]$ が成り立つ. 任意の $\varepsilon \gt 0$ に対して, $\delta(\varepsilon)=\delta_1\left(\delta_2(\varepsilon)\right)$ と定めると, 任意の $n \in \mathbb{N}$ と任意の $x, \tilde{x} \in \mathbb{R}$ に対して
+            $$
+            |x-\tilde{x}| \lt \delta(\varepsilon) \Longrightarrow\left|f_n(x)-f_n(\tilde{x})\right| \lt \delta_2(\varepsilon) \Longrightarrow\left|g\left(f_n(x)\right)-g\left(f_n(\tilde{x})\right)\right| \lt \varepsilon
+            $$
+
+            が成り立つので, $\left\{g \circ f_n\right\}$ は $I$ で同程度連続である.
+            5.8. $\left\{f_n\right\}$ が $I$ で一様収束するから, 極限関数を $f$ とすると
+            $$
+            { }^{\forall} \varepsilon \gt 0,{ }^{\exists} N(\varepsilon) \in \mathbb{N},{ }^{\forall} x \in I,{ }^{\forall} n \in \mathbb{N}\left[n \geq N(\varepsilon) \Longrightarrow\left|f_n(x)-f(x)\right| \lt \varepsilon\right]
+            $$
+
+            が成り立つ. まず, 極限関数 $f(x)$ が $I$ で有界であることを背理法で示す。 $f(x)$ が $I$ で有界 でないと仮定すると, ${ }^{\forall} M \gt 0,{ }^{\exists} x_M \in I\left[\left|f\left(x_M\right)\right| \gt M\right]$ が成り立つ. $M$ は任意の正の数
+            </p>
+        </div>
+
+        <div class="def ">
+            <span class="def-t ">
+                <h4>13</h4>
+            </span>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>206
+                問 題 解 答
+                たから, $M=1, M=2, \cdots, M=k, \cdots$ ( $k$ は自然数 $)$ とおき， $x_1, x_2, \cdots, x_k, \cdots$ を数列 $\left\{x_k\right\}$ とみなすと, 上式より ${ }^{\exists}\left\{x_k\right\} \subset I\left[\left|f\left(x_k\right)\right| \gt k\right] \cdots$ (2) が得られる. (1)で $\varepsilon=1$, $x=x_k, n=N(1)$ とおくと, (1)より $\left|f\left(x_k\right)\right|-\left|f_{N(1)}\left(x_k\right)\right| \leq\left|f\left(x_k\right)-f_{N(1)}\left(x_k\right)\right| \lt 1$ で あるから，(2)と合わせると
+                $$
+                \left|f_{N(1)}\left(x_k\right)\right| \geq\left|f\left(x_k\right)\right|-1 \gt k-1
+                $$
+                
+                が成り立つ. $k$ は任意の自然数だから, 上式で $k \rightarrow \infty$ とすると $\left|f_{N(1)}\left(x_k\right)\right| \rightarrow \infty$ となり, こ れは $f_{N(1)}(x)$ が $I$ で有界であることに矛盾する。
+                $f(x)$ が $I$ で有界であるから, ${ }^{\exists} M_0 \gt 0,{ }^{\forall} x \in I\left[|f(x)| \leq M_0\right]$ が成り立つ.したがって；任意の $x \in I$ と任意の $n \in \mathbb{N}$ に対して，(1)と上式より
+                $$
+                n \geq N(1) \Longrightarrow\left|f_n(x)\right| \leq|f(x)|+\left|f_n(x)-f(x)\right| \lt M_0+1
+                $$
+                
+                が成り立つ. また，各 $f_n(x)(n=1,2, \cdots, N(1)-1)$ は $I$ で有界であるから
+                $$
+                { }^{\forall} n \in\{1,2, \cdots, N(1)-1\},{ }^{\exists} M_n \gt 0,{ }^{\forall} x \in I\left[\left|f_n(x)\right| \leq M_n\right]
+                $$
+                
+                が成り立つ. よって, $\tilde{M}=\max \left\{M_1, M_2, \cdots, M_{N(1)-1}, M_0+1\right\}$ と定めると, (3), (4)より ${ }^{\forall} x \in I,{ }^{\forall} n \in \mathbb{N}\left[\left|f_n(x)\right| \leq \tilde{M}\right]$ が得られるので, $\left\{f_n\right\}$ は $I$ で一様有界である.
+                5.9. (1) $g(x)$ の $\mathbb{R}$ での有界性より, ${ }^{\exists} M \gt 0,{ }^{\forall} x \in \mathbb{R}[|g(x)| \leq M]$ が成り立つ.よって，任意の $x \in I$ と任意の $n \in \mathbb{N}$ に対して
+                $$
+                \left|\varphi_n(x)\right| \leq|c|+\int_a^x\left|g\left(\varphi_{n-1}(\xi)\right)\right| d \xi \leq|c|+M(x-a) \leq|c|+M(b-a)
+                $$
+                
+                であるから, $\left\{\varphi_n\right\}$ は $I$ で一様有界である。また, 任意の $n \in \mathbb{N}$ と任意の $x, \tilde{x} \in I$ に対して
+                $$
+                \left|\varphi_n(x)-\varphi_n(\tilde{x})\right|=\left|\int_{\tilde{x}}^x g\left(\varphi_{n-1}(\xi)\right) d \xi\right| \leq\left|\int_{\tilde{x}}^x\right| g\left(\varphi_{n-1}(\xi)\right)|d \xi| \leq M|x-\tilde{x}|
+                $$
+                
+                であるから，問 5.16 により， $\left\{\varphi_n\right\}$ は $I$ で同程度連続である.よって，アスコリ・アルツェラ の定理により， $\left\{\varphi_n\right\}$ の中から $I$ で一様収束する部分列 $\left\{\varphi_{n_k}\right\}_{k=1}^{\infty}$ を選び出すことができる. $\left\{\varphi_{n_k}\right\}_{k=1}^{\infty}$ の極限関数を $\varphi$ とすると, $\left\{\varphi_{n_k}\right\}_{k=1}^{\infty}$ は $I$ で連続であるから, 例題 5.5 により, $\varphi$ もI で連続である.
+                (2) 任意の $x \in I$ と任意の $k \in\{2,3, \cdots\}$ に対して $\varphi_{n_k}(x)=c+\int_a^x g\left(\varphi_{n_k-1}(\xi)\right) d \xi$ が成り 立つ. (1) より $\left\{\varphi_{n_k}\right\}_{k=1}^{\infty}$ は $I$ で一様収束する連続な関数列であるから, 演習問題 5.6 の結果 より, $\left\{g\left(\varphi_{n_k}(x)\right)\right\}_{k=1}^{\infty}$ は $I$ で $g(\varphi(x))$ に一様収束する.したがって, 例題 5.7 により, 一様収束列に関する $\lim$ と積分の順序交換は可能であるから，任意の $x \in I$ に対して
+                $$
+                \begin{aligned}
+                \varphi(x)=\lim _{k \rightarrow \infty} \varphi_{n_k}(x) & =c+\lim _{k \rightarrow \infty} \int_a^x g\left(\varphi_{n_k-1}(\xi)\right) d \xi \\
+                & =c+\int_a^x \lim _{k \rightarrow \infty} g\left(\varphi_{n_k-1}(\xi)\right) d \xi=c+\int_a^x g(\varphi(\xi)) d \xi
+                \end{aligned}
+                $$
+                
+                が成り立つ. よって，極限関数 $\varphi$ は $I$ で積分方程式 $\varphi(x)=c+\int_a^x g(\varphi(\xi)) d \xi$ をみたす.</p>
+        </div>
+
+        <div class="def ">
+            <span class="def-t ">
+                <h4>問2.12 (p.44)</h4>
+            </span>
+            <p></p>
+        </div>
+
+        <div class="ans">
+            <span class="ans-t">
+                <h5>解答</h5>
+            </span>
+            <p>これはよくあるパターン</p>
+           <p>$\Lim{x} f(x) = \alpha$より，
+                $$^\forall \ep \gt 0,\; ^\exists X_1(\ep) \gt 0,\; ^\forall x \in [0,\; \infty) [x\geq X_1(\ep) \Longrightarrow |f(x) - \alpha | \lt \ep] \cdots \cdots ①$$
+                が成り立つ。
+           </p>
+
+           <p>$\Lim{x} f(x) = \alpha,\; \dlim{x\to \infty} g(x) = \beta$より，
+                $$^\forall \ep \gt 0,\; ^\exists X_1(\ep) \gt 0,\; ^\forall x \in [0,\; \infty) [x\geq X_1(\ep) \Longrightarrow |f(x) - \alpha | \lt \ep] \cdots \cdots ①$$
+                $$^\forall \ep \gt 0,\; ^\exists X_2(\ep) \gt 0,\; ^\forall x \in [0,\; \infty) [x\geq X_2(\ep) \Longrightarrow |f(x) - \beta | \lt \ep] \cdots \cdots ➁$$
+                が成り立つ。
+           </p>
+
+           <p>$\dlim{x\to a} f(x) = \alpha$より，
+                $$^\forall \ep \gt 0,\; ^\exists \delta_1(\ep) \gt 0,\; ^\forall x \in D\; [0 \lt |x - a| \lt \delta_1(\ep) \Longrightarrow |f(x) - \alpha| \lt \ep] \cdots \cdots ①$$
+                が成り立つ。
+           </p>
+           <p>$\dlim{x\to a} f(x) = \alpha$，$\dlim{x\to a} g(x)= \beta$より，
+                $$^\forall \ep \gt 0,\; ^\exists \delta_1(\ep) \gt 0,\; ^\forall x \in D\; [0 \lt |x - a| \lt \delta_1(\ep) \Longrightarrow |f(x) - \alpha| \lt \ep] \cdots \cdots ①$$
+                $$^\forall \ep \gt 0,\; ^\exists \delta_2(\ep) \gt 0,\; ^\forall x \in D\; [0 \lt |x - a| \lt \delta_2(\ep) \Longrightarrow |g(x) - \beta| \lt \ep] \cdots \cdots ➁$$
+                が成り立つ。
+            </p>
+
+            <br>
+
+            <p>$f(x)$と$g(x)$が$x = a$で連続であるから，
+                $$^\forall \ep \gt 0,\; ^\exists \delta_1 (\ep) \gt 0 ,\; ^\forall x \in D \; [|x - a| \lt \delta_1(\ep) \Longrightarrow |f(x) - f(a)| \lt \ep] \cdots \cdots ①$$
+                $$^\forall \ep \gt 0,\; ^\exists \delta_2 (\ep) \gt 0 ,\; ^\forall x \in D \; [|x - a| \lt \delta_2(\ep) \Longrightarrow |g(x) - g(a)| \lt \ep] \cdots \cdots ➁$$
+                が成り立つ。
+            </p>
+        </div>
+
+
+        <p style="text-align:right;"><a href="#top" class="btn-square-slant ">↑トップに戻る</a></p>
+        <div class="flex">
+            <p style="width:33%;"><a href="./note2.html " class="btn-square-slant ">←前のページに戻る</a></p>
+            <p style="width:33%;"><a href="../index.html " class="btn-square-slant ">トップページに戻る</a></p>
+            <p style="width:33%;"><a href="./note4.html " class="btn-square-slant ">次のページに移る→</a></p>
+        </div>
+
+        <br>
+
+</body>
+
+</html>
