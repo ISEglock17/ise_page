@@ -533,14 +533,21 @@
       bulkEditBtn.addEventListener('click', ()=>{
         bulkInputs.innerHTML='';
         cells.forEach((td,i)=>{
-          const inp = document.createElement('input'); inp.type='text'; inp.value = (td.querySelector('.text')||{}).textContent || '';
-          inp.style.width='100%'; inp.dataset.idx = i; bulkInputs.appendChild(inp);
+          const ta = document.createElement('textarea');
+          ta.value = (td.querySelector('.text')||{}).textContent || '';
+          ta.rows = 3;
+          ta.style.width='100%';
+          ta.style.minHeight='56px';
+          ta.style.boxSizing='border-box';
+          ta.style.resize='vertical';
+          ta.dataset.idx = i;
+          bulkInputs.appendChild(ta);
         });
         bulkModal.style.display = 'flex';
       });
       bulkCloseBtn.addEventListener('click', ()=>{ bulkModal.style.display='none'; });
       bulkSaveBtn.addEventListener('click', ()=>{
-        const inputs = Array.from(bulkInputs.querySelectorAll('input'));
+        const inputs = Array.from(bulkInputs.querySelectorAll('textarea'));
         inputs.forEach(inp=>{ const i = parseInt(inp.dataset.idx,10); const td = cells[i]; const s = td.querySelector('.text'); if(s) s.textContent = inp.value; });
         persistTexts();
         bulkModal.style.display='none';
