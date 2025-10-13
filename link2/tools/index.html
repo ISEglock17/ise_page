@@ -28,6 +28,21 @@
     }
     .board-wrap{background:white;border-radius:12px;padding:16px;box-shadow:0 6px 20px rgba(11,18,32,0.08);max-width:1100px;width:100%}
 
+  /* controls layout and RPG-style preset panel */
+  .controls-area{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+  .controls-left{flex:1;display:flex;flex-direction:column;gap:8px}
+  .controls-group{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px;background:#f3f4f6;border-radius:8px}
+  .preset-panel{width:260px;background:linear-gradient(180deg,#0b1220,#14233a);color:#fff;padding:12px;border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.45);border:1px solid rgba(255,255,255,0.04)}
+  .preset-panel h4{margin:0 0 8px 0;text-align:center;font-weight:800;letter-spacing:0.6px}
+  .preset-panel button{width:100%;padding:10px;border-radius:10px;border:0;color:white;font-weight:700;cursor:pointer}
+  .preset-panel .preset-primary{background:linear-gradient(180deg,#ff7a59,#ff4a3a);box-shadow:0 6px 18px rgba(255,74,58,0.12)}
+  .preset-panel .preset-new{background:linear-gradient(180deg,#10b981,#059669);box-shadow:0 6px 18px rgba(6,95,70,0.12)}
+  .controls .status{margin-left:auto}
+    @media (max-width:720px){
+      .controls-area{flex-direction:column}
+      .preset-panel{width:100%}
+    }
+
   table.bingo{width:100%;border-collapse:collapse;table-layout:fixed;font-size:14px}
   table.bingo td{border:1px solid #e6e9ef;padding:18px;text-align:center;vertical-align:middle;cursor:pointer;position:relative;height:120px}
   /* responsive font sizing */
@@ -76,14 +91,46 @@
     </div>
     <h2 id="titleDisplay" style="margin:0 0 12px 0;font-size:18px;font-weight:700;color:#b22222">&nbsp;</h2>
     <div class="controls">
-      <button id="resetBtn" class="secondary">リセット</button>
-      <button id="randomBtn" class="secondary">ランダムにマーク</button>
-      <button id="saveBtn" class="secondary">保存</button>
-      <button id="loadBtn" class="secondary">読み込み</button>
-      <button id="editAllBtn" class="secondary">全体編集</button>
-  <button id="exportBtn">画像として保存</button>
-  <button id="shareBtn" class="secondary">共有 (X)</button>
-      <div class="status" id="status">Bingo: 0</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px">
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px">
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px">
+      <div class="controls-area">
+        <div class="controls-left">
+          <div class="controls-group">
+            <button id="resetBtn" class="secondary">マークのリセット</button>
+            <button id="randomBtn" class="secondary">ランダムにマーク</button>
+          </div>
+          <div class="controls-group">
+            <button id="saveBtn" class="secondary">マーク保存</button>
+            <button id="loadBtn" class="secondary">マーク読み込み</button>
+          </div>
+          <div class="controls-group">
+            <button id="exportFileBtn" class="secondary">テーブル保存</button>
+            <button id="importFileBtn" class="secondary">テーブル読み込み</button>
+          </div>
+          <div class="controls-group">
+            <button id="editAllBtn" class="secondary">全体編集</button>
+            <button id="exportBtn">画像として保存</button>
+            <button id="shareBtn" class="secondary">共有</button>
+            <div class="status" id="status">Bingo: 0</div>
+          </div>
+        </div>
+
+        <div class="preset-panel">
+          <h4>プリセット</h4>
+          <button id="presetBtn" class="preset-primary">予後悪ビンゴ</button>
+          <div style="height:8px"></div>
+          <button id="newBtn" class="preset-new">新規ビンゴ</button>
+        </div>
+      </div>
+      </div>
     </div>
 
     <!-- 元のテーブルをHTMLとして組み込み。JSでセルを読み取り、5x5の操作を行います -->
@@ -327,6 +374,40 @@
         localStorage.setItem('bingo_state_v1', JSON.stringify(payload));
         alert('保存しました（localStorage）');
       });
+      // export table as JSON file (includes title, texts, marks)
+      document.getElementById('exportFileBtn').addEventListener('click', ()=>{
+        const texts = cells.map(c=> (c.querySelector('.text')||{}).textContent || '');
+        const marks = cells.map(c=> c.classList.contains('marked'));
+        const payload = { title: titleDisplay.textContent || '', texts, marks };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'bingo_board.json'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),2000);
+      });
+
+      // import JSON file and populate table
+      document.getElementById('importFileBtn').addEventListener('click', ()=>{
+        const inp = document.createElement('input'); inp.type='file'; inp.accept='application/json';
+        inp.addEventListener('change', ()=>{
+          const f = inp.files[0]; if(!f) return; const reader = new FileReader();
+          reader.onload = ()=>{
+            try{
+              const payload = JSON.parse(reader.result);
+              if(payload.title) titleDisplay.textContent = payload.title;
+              if(Array.isArray(payload.texts)){
+                payload.texts.forEach((t,i)=>{ const s = cells[i].querySelector('.text'); if(s) s.textContent = t; });
+                persistTexts();
+              }
+              if(Array.isArray(payload.marks)){
+                payload.marks.forEach((v,i)=>{ if(v) cells[i].classList.add('marked'); else cells[i].classList.remove('marked'); });
+              }
+              evaluate();
+              alert('読み込みが完了しました');
+            }catch(e){ alert('ファイルの読み込みに失敗しました'); }
+          };
+          reader.readAsText(f);
+        });
+        inp.click();
+      });
       document.getElementById('loadBtn').addEventListener('click', ()=>{
         const raw = localStorage.getItem('bingo_state_v1');
         if(!raw){ alert('保存データが見つかりません'); return; }
@@ -424,6 +505,24 @@
           arr.forEach((t,i)=>{ if(typeof t==='string' && t.trim()!=='' ){ const s = cells[i].querySelector('.text'); if(s) s.textContent = t; } });
         }catch(e){}
       }
+
+      // capture current texts as preset default for "予後悪ビンゴ"
+      const presetDefault = cells.map(c=> (c.querySelector('.text')||{}).textContent || '');
+
+      // preset and new board handlers
+      const presetBtn = document.getElementById('presetBtn');
+      const newBtn = document.getElementById('newBtn');
+      presetBtn.addEventListener('click', ()=>{
+        // load presetDefault into cells, clear marks
+        presetDefault.forEach((txt,i)=>{ const s = cells[i].querySelector('.text'); if(s) s.textContent = txt; cells[i].classList.remove('marked'); cells[i].setAttribute('aria-pressed','false'); });
+        persistTexts(); evaluate();
+      });
+      newBtn.addEventListener('click', ()=>{
+        // clear all texts and marks
+        cells.forEach(c=>{ const s = c.querySelector('.text'); if(s) s.textContent = ''; c.classList.remove('marked'); c.setAttribute('aria-pressed','false'); });
+        titleDisplay.textContent = '';
+        persistTexts(); evaluate();
+      });
 
       // bulk edit modal handlers
       const bulkEditBtn = document.getElementById('editAllBtn');
