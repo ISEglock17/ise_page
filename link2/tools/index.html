@@ -63,6 +63,8 @@
 
     footer{font-size:12px;color:#5b6674;margin-top:12px}
   </style>
+  <!-- html2canvas for faithful DOM -> PNG rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
   <h1>動的Bingoテーブル — クリックで〇をつけてBingo判定</h1>
@@ -447,90 +449,15 @@
 
       // reliable exporter: draw the table to canvas by drawing background, grid and text
   async function exportAsPng(){
-        // compute layout roughly from DOM
-        const rect = table.getBoundingClientRect();
-        const titleRect = titleDisplay.getBoundingClientRect();
-        const padding = 20;
-        const width = Math.max(rect.width, 400);
-        const height = rect.height + titleRect.height + padding;
-        const dpi = 2;
-
-        const canvas = document.createElement('canvas');
-        canvas.width = Math.round(width * dpi);
-        canvas.height = Math.round(height * dpi);
-        const ctx = canvas.getContext('2d');
-        ctx.scale(dpi, dpi);
-        // white background
-        ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,width,height);
-        // draw title
-        ctx.fillStyle = '#b22222'; ctx.font = '700 18px "Noto Sans JP", Arial';
-        ctx.fillText(titleDisplay.textContent || '', 12, 22);
-
-        // draw table cells: compute rows/cols and each cell rect
-        const rows = table.querySelectorAll('tr').length;
-        const cols = table.querySelectorAll('tr')[0].children.length;
-        const tableTop = 36;
-        const cellWidth = (width - 24) / cols;
-        const cellHeight = (height - tableTop - 12) / rows;
-        ctx.strokeStyle = '#e6e9ef'; ctx.lineWidth = 1;
-        ctx.fillStyle = '#000'; ctx.font = '12px "Noto Sans JP", Arial';
-        for(let r=0;r<rows;r++){
-          for(let c=0;c<cols;c++){
-            const x = 12 + c*cellWidth;
-            const y = tableTop + r*cellHeight;
-            ctx.strokeRect(x,y,cellWidth,cellHeight);
-            const cell = cells[r*cols + c];
-            const text = (cell.querySelector('.text')||{}).textContent || '';
-            // wrap text with char-level wrapping; compute max lines from cellHeight
-            const lh = 16;
-            const maxLines = Math.max(1, Math.floor((cellHeight - 12) / lh));
-            wrapText(ctx, text, x+8, y+18, cellWidth-16, lh, maxLines);
-          }
-        }
-
-        // highlight lines (use same detection as evaluate)
-        const marks = cells.map(c=>c.classList.contains('marked'));
-        const lines = [];
-        for(let r=0;r<5;r++) lines.push(marks.slice(r*5, r*5+5));
-        for(let c=0;c<5;c++) lines.push([0,1,2,3,4].map(r=>marks[r*5 + c]));
-        lines.push([0,6,12,18,24].map(i=>marks[i]));
-        lines.push([4,8,12,16,20].map(i=>marks[i]));
-        const completed = lines.map((ln, idx)=> ({ok: ln.every(Boolean), idx})).filter(x=>x.ok);
-        // draw red overlay bars for each completed
-        ctx.fillStyle = 'rgba(255,59,48,0.16)';
-        completed.forEach(obj=>{
-          const li = obj.idx;
-          if(li<5){ // row
-            const r = li; const x = 12; const y = tableTop + r*cellHeight; ctx.fillRect(x,y,cellWidth*cols,cellHeight);
-          } else if(li<10){ // col
-            const c = li-5; const x = 12 + c*cellWidth; const y = tableTop; ctx.fillRect(x,y,cellWidth,cellHeight*rows);
-          } else if(li===10){ // main diag
-            // draw rotated rect across centers
-            ctx.save();
-            const fx = 12 + cellWidth/2; const fy = tableTop + cellHeight/2;
-            const lx = 12 + (cols-0.5)*cellWidth; const ly = tableTop + (rows-0.5)*cellHeight;
-            const angle = Math.atan2(ly-fy, lx-fx);
-            const len = Math.hypot(lx-fx, ly-fy);
-            ctx.translate((fx+lx)/2, (fy+ly)/2);
-            ctx.rotate(angle);
-            ctx.fillRect(-len/2, -cellHeight/2, len, cellHeight);
-            ctx.restore();
-          } else if(li===11){ // anti-diag
-            ctx.save();
-            const fx = 12 + (cols-0.5)*cellWidth; const fy = tableTop + cellHeight/2;
-            const lx = 12 + cellWidth/2; const ly = tableTop + (rows-0.5)*cellHeight;
-            const angle = Math.atan2(ly-fy, lx-fx);
-            const len = Math.hypot(lx-fx, ly-fy);
-            ctx.translate((fx+lx)/2, (fy+ly)/2);
-            ctx.rotate(angle);
-            ctx.fillRect(-len/2, -cellHeight/2, len, cellHeight);
-            ctx.restore();
-          }
-        });
-
-        // return blob for caller to handle download/share
-        return await new Promise((resolve)=>{ canvas.toBlob(blob=>{ resolve(blob); }); });
-      }
+    // use html2canvas to render the board-wrap faithfully
+    const wrapper = document.querySelector('.board-wrap');
+    if(!window.html2canvas){
+      throw new Error('html2canvas not loaded');
+    }
+    // render at double resolution for crispness
+    const canvas = await html2canvas(wrapper, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false });
+    return await new Promise((resolve)=>{ canvas.toBlob(blob=>{ resolve(blob); }, 'image/png'); });
+  }
 
       function wrapText(ctx, text, x, y, maxWidth, lineHeight, maxLines){
         // character-based wrap (works for Japanese). maxLines optional
@@ -563,7 +490,8 @@
       // share handler: uses exportAsPng() to generate a PNG Blob, then tries Web Share API; fallback opens X compose and triggers download
       document.getElementById('shareBtn').addEventListener('click', async ()=>{
         try{
-          const blob = await exportAsPng();
+            let blob;
+            try{ blob = await exportAsPng(); }catch(e){ console.error('export failed', e); alert('画像生成に失敗したため共有できません'); return; }
           // try Web Share API
           const file = new File([blob], 'bingo.png', { type: 'image/png' });
           if(navigator.canShare && navigator.canShare({ files: [file] } )){
