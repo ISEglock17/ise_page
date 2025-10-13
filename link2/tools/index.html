@@ -133,6 +133,8 @@
           <button id="presetBtn" class="preset-primary">予後悪ビンゴ</button>
           <div style="height:8px"></div>
           <button id="presetDeepBtn" class="preset-primary" style="margin-bottom:8px">予後悪ビンゴ 深淵版</button>
+          <div style="height:6px"></div>
+          <button id="presetRikeiBtn" class="preset-primary" style="margin-bottom:8px">理系大学生 後悔ビンゴ</button>
           <button id="newBtn" class="preset-new">新規ビンゴ</button>
         </div>
       </div>
@@ -669,6 +671,42 @@
       if(presetDeepBtn){
         presetDeepBtn.addEventListener('click', ()=>{
           deepPreset.forEach((t,i)=>{ const s = cells[i].querySelector('.text'); if(s) s.textContent = t; cells[i].classList.remove('marked'); cells[i].setAttribute('aria-pressed','false'); });
+          persistTexts(); evaluate();
+        });
+      }
+
+      // 理系大学生 後悔ビンゴ preset
+      const rikeiPreset = [
+        '入学初日に「ぼっちにならないようにしよう」と思った',
+        'サークルを調べたまま入らなかった',
+        '研究室の飲み会が地獄だった',
+        '発表でフリーズした',
+        '研究が嫌すぎて人生考えた',
+        '友達に「お前、理系っぽいな」って言われて複雑',
+        'WordよりLaTeX派を誇ってた',
+        '実験レポートで一晩潰した',
+        'バイト先で文系にマウント取られた',
+        '就活サイトの自己PR欄が埋まらなかった',
+        '「大学で彼女できる」と信じてた',
+        '研究が忙しくて恋愛どころじゃない',
+        '「仕様です」で誤魔化したことがある',
+        '発表スライドが地味すぎる',
+        'Slackの返信が異常に早い',
+        '院進か就職かで1ヶ月悩んだ',
+        '研究室で「すみません」しか言ってない',
+        '卒研テーマが地雷だった',
+        '教授の一言で一日終わった',
+        '実験の失敗を笑い話にできない',
+        '何かを諦めるのがうまくなった',
+        '「大学生活＝修行」だと思ってる',
+        '研究より人生の意味を考える時間が長い',
+        '就活の面接で泣きそうになった',
+        '気づいたら4年間が無かったことになってた'
+      ];
+      const presetRikeiBtn = document.getElementById('presetRikeiBtn');
+      if(presetRikeiBtn){
+        presetRikeiBtn.addEventListener('click', ()=>{
+          rikeiPreset.forEach((t,i)=>{ const s = cells[i].querySelector('.text'); if(s) s.textContent = t; cells[i].classList.remove('marked'); cells[i].setAttribute('aria-pressed','false'); });
           persistTexts(); evaluate();
         });
       }
