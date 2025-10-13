@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>動的Bingoテーブル</title>
+  <style>
+    :root{
+      --cell-w: 18vw; /* responsive cell width */
+      --gap: 6px;
+      --accent: #2b8aef;
+      --accent-2: #ff7a59;
+      --bg: #0f172a;
+      --card: #0b1220;
+    }
+  *{box-sizing:border-box}
+    body{
+      font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin:20px; background: #f6f8fb; color:#0b1220;
+      display:flex; flex-direction:column; gap:16px; align-items:center; min-height:100vh;
+    }
+    h1{margin:0 0 8px 0; font-size:20px}
+    /* responsive tweaks for container */
+    .board-wrap{padding:16px}
+    @media (max-width:600px){
+      .board-wrap{padding:12px}
+      h1{font-size:16px}
+    }
+    .board-wrap{background:white;border-radius:12px;padding:16px;box-shadow:0 6px 20px rgba(11,18,32,0.08);max-width:1100px;width:100%}
+
+  table.bingo{width:100%;border-collapse:collapse;table-layout:fixed;font-size:14px}
+  table.bingo td{border:1px solid #e6e9ef;padding:18px;text-align:center;vertical-align:middle;cursor:pointer;position:relative;height:120px}
+  /* responsive font sizing */
+  table.bingo{font-size:clamp(12px,1.2vw,15px)}
+    table.bingo td .text{display:block;padding:4px 6px;line-height:1.4}
+  /* don't fill whole cell when marked; only show mark. keep border subtle */
+  table.bingo td.marked{background:transparent;border-color:rgba(255,59,48,0.12)}
+    /* big circle mark (red marker visual) */
+    table.bingo td .mark{
+      position:absolute;right:8px;top:8px;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;opacity:0;transform:scale(0.6);transition:all .18s ease;border:2px solid transparent;background:transparent;color:rgba(178,34,34,0.95)}
+    table.bingo td.marked .mark{
+      opacity:1;transform:scale(1);background:rgba(255,59,48,0.12);border:3px solid rgba(255,59,48,0.95);color:rgba(255,59,48,0.95);box-shadow:0 8px 24px rgba(255,59,48,0.12)
+    }
+
+    /* bingo highlight for completed lines */
+    .line-highlight{position:absolute;pointer-events:none;z-index:5}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+    .controls button{padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:white;cursor:pointer}
+    .controls button.secondary{background:#fff;border:1px solid #e6e9ef;color:#0b1220}
+    .status{margin-left:auto;font-weight:700}
+
+    /* responsive tweaks */
+    @media (max-width:800px){
+      table.bingo td{height:100px;padding:12px;font-size:13px}
+    }
+    @media (max-width:520px){
+      table.bingo td{height:92px;padding:10px;font-size:12px}
+    }
+
+  /* subtle confetti using pseudo elements when bingo */
+    .confetti-piece{position:fixed;width:10px;height:14px;background:var(--accent-2);opacity:0;transform:translateY(-20px) rotate(20deg);animation:fall 1100ms linear forwards}
+    @keyframes fall{to{opacity:1;transform:translateY(90vh) rotate(720deg);opacity:1}}
+
+    footer{font-size:12px;color:#5b6674;margin-top:12px}
+  </style>
+</head>
+<body>
+  <h1>動的Bingoテーブル — クリックで〇をつけてBingo判定</h1>
+  <div class="board-wrap">
+    <!-- Title edit area -->
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
+      <input id="titleInput" type="text" placeholder="ボードタイトルを入力（例: 私のBingo）" style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6e9ef" />
+      <button id="setTitleBtn" class="secondary">タイトル設定</button>
+    </div>
+    <h2 id="titleDisplay" style="margin:0 0 12px 0;font-size:18px;font-weight:700;color:#b22222">&nbsp;</h2>
+    <div class="controls">
+      <button id="resetBtn" class="secondary">リセット</button>
+      <button id="randomBtn" class="secondary">ランダムにマーク</button>
+      <button id="saveBtn" class="secondary">保存</button>
+      <button id="loadBtn" class="secondary">読み込み</button>
+  <button id="exportBtn">画像として保存</button>
+  <button id="shareBtn" class="secondary">共有 (X)</button>
+      <div class="status" id="status">Bingo: 0</div>
+    </div>
+
+    <!-- 元のテーブルをHTMLとして組み込み。JSでセルを読み取り、5x5の操作を行います -->
+    <div style="position:relative">
+      <table class="bingo" id="bingoTable">
+        <tbody>
+        <tr>
+          <td>学歴レスバで東大の学生証を見せているのに憧れたことがある</td>
+          <td>文化部or帰宅部</td>
+          <td>字が汚い</td>
+          <td>胃腸が弱い</td>
+          <td>クラTやクラパーカーを冷笑</td>
+        </tr>
+        <tr>
+          <td>InstagramをLINEの上位互換だと思っていない</td>
+          <td>れてんジャダム，Wakatte TV，山田ハウス，Fラン就職のいずれかが好き</td>
+          <td>50m走8.0s以上</td>
+          <td>ボカロにハマってたことがある</td>
+          <td>朝起きれない</td>
+        </tr>
+        <tr>
+          <td>友達と焼肉行ったことがない</td>
+          <td>電車だと端の席が好き</td>
+          <td>こんなのをしようとしている</td>
+          <td>twitterでポストを何回もしてる</td>
+          <td>横断歩道で曲がろうとした時車が来たことに気づき，やりすごしたことがある</td>
+        </tr>
+        <tr>
+          <td>コムドット，スカイピースに嫌悪感</td>
+          <td>BMI18.5以下あるいは25.0以上</td>
+          <td>デスクトップPCを持っている</td>
+          <td>身長170cm未満</td>
+          <td>恋愛経験なし</td>
+        </tr>
+        <tr>
+          <td>4時までカフェイン無しで普通に起きてられる</td>
+          <td>音ゲーそこそこ以上できる</td>
+          <td>ミセス聴いてない</td>
+          <td>変な性癖</td>
+          <td>変な音楽の趣味</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <!-- line-highlights will be injected here -->
+      <div id="highlightsHolder"></div>
+    </div>
+
+    <footer>操作: セルをクリックしてマーク/解除。保存はローカルストレージ。</footer>
+  </div>
+
+  <script>
+    (function(){
+  const table = document.getElementById('bingoTable');
+  const cells = Array.from(table.querySelectorAll('td'));
+  const status = document.getElementById('status');
+  const highlightsHolder = document.getElementById('highlightsHolder');
+  const titleInput = document.getElementById('titleInput');
+  const setTitleBtn = document.getElementById('setTitleBtn');
+  const titleDisplay = document.getElementById('titleDisplay');
+
+      // enhance each cell with a mark element and index
+      cells.forEach((td, i)=>{
+        td.dataset.index = i;
+        const span = document.createElement('span');
+        span.className='text';
+        span.innerHTML = td.innerHTML;
+        td.innerHTML = '';
+        td.appendChild(span);
+        const mark = document.createElement('div');
+        mark.className='mark';
+        mark.textContent='〇';
+        td.appendChild(mark);
+        td.addEventListener('click', ()=>toggle(i));
+        td.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') toggle(i)});
+        td.tabIndex = 0;
+        td.setAttribute('aria-pressed','false');
+      });
+
+      function toggle(i){
+        const td = cells[i];
+        td.classList.toggle('marked');
+        const pressed = td.classList.contains('marked');
+        td.setAttribute('aria-pressed', pressed? 'true' : 'false');
+        evaluate();
+      }
+
+      function evaluate(){
+        // build boolean grid 5x5
+        const marks = cells.map(c=>c.classList.contains('marked'));
+        const lines = [];
+        // rows
+        for(let r=0;r<5;r++) lines.push(marks.slice(r*5, r*5+5));
+        // cols
+        for(let c=0;c<5;c++){ lines.push([0,1,2,3,4].map(r=>marks[r*5 + c])); }
+        // diagonals
+        lines.push([0,6,12,18,24].map(i=>marks[i]));
+        lines.push([4,8,12,16,20].map(i=>marks[i]));
+
+        // count completed lines
+        const completed = lines.map((ln, idx)=> ({ok: ln.every(Boolean), idx})).filter(x=>x.ok);
+
+        // update highlights
+        renderHighlights(completed.map(x=>x.idx));
+
+        status.textContent = 'Bingo: ' + completed.length;
+
+        if(completed.length>0){
+          // celebration
+          spawnConfetti(18);
+        }
+      }
+
+      function renderHighlights(lineIdxs){
+        // remove current
+        highlightsHolder.innerHTML='';
+        if(lineIdxs.length===0) return;
+        lineIdxs.forEach(li=>{
+          const el = document.createElement('div');
+          el.className='line-highlight';
+          el.style.left = 0;
+          el.style.top = 0;
+          el.style.right = 0;
+          el.style.bottom = 0;
+          el.style.display='flex';
+          el.style.pointerEvents='none';
+
+          const overlay = document.createElement('div');
+          // red marker style overlay (avoid mix-blend and backdrop blur which caused mosaic)
+          overlay.style.position='absolute';
+          overlay.style.inset='0';
+          overlay.style.borderRadius='10px';
+          overlay.style.background='linear-gradient(90deg, rgba(255,59,48,0.18), rgba(255,59,48,0.12))';
+          overlay.style.opacity = 0.95;
+
+          // we will position a stroked bar across the table for the corresponding line.
+          const rect = table.getBoundingClientRect();
+          const cellRect = cells[0].getBoundingClientRect();
+
+          const bar = document.createElement('div');
+          bar.style.position='absolute';
+          bar.style.zIndex=4;
+          bar.style.pointerEvents='none';
+
+          if(li < 5){
+            // row
+            const r = li;
+            const first = cells[r*5];
+            const last = cells[r*5 + 4];
+            const a = first.getBoundingClientRect();
+            const b = last.getBoundingClientRect();
+            const top = a.top - rect.top + table.scrollTop + 4;
+            bar.style.left = (a.left - rect.left + 4) + 'px';
+            bar.style.top = top + 'px';
+            bar.style.width = (b.right - a.left - 8) + 'px';
+            bar.style.height = (a.height - 8) + 'px';
+            bar.style.borderRadius='10px';
+            bar.style.boxShadow='0 8px 30px rgba(43,138,239,0.12)';
+          } else if(li < 10){
+            // column
+            const c = li - 5;
+            const first = cells[c];
+            const last = cells[c + 4*5];
+            const a = first.getBoundingClientRect();
+            const b = last.getBoundingClientRect();
+            bar.style.left = (a.left - rect.left + 4) + 'px';
+            bar.style.top = (a.top - rect.top + 4) + 'px';
+            bar.style.width = (a.width - 8) + 'px';
+            bar.style.height = (b.bottom - a.top - 8) + 'px';
+            bar.style.borderRadius='10px';
+            bar.style.boxShadow='0 8px 30px rgba(255,122,89,0.14)';
+          } else if(li===10 || li===11){
+            // diagonals: compute from the list of indices
+            const idxs = (li===10) ? [0,6,12,18,24] : [4,8,12,16,20];
+            const first = cells[idxs[0]].getBoundingClientRect();
+            const last = cells[idxs[idxs.length-1]].getBoundingClientRect();
+            // center points of first and last
+            const fx = first.left + first.width/2;
+            const fy = first.top + first.height/2;
+            const lx = last.left + last.width/2;
+            const ly = last.top + last.height/2;
+            const angle = Math.atan2(ly - fy, lx - fx) * 180/Math.PI;
+            const length = Math.hypot(lx - fx, ly - fy);
+            // position bar centered between first and last
+            const cx = (fx + lx)/2 - rect.left;
+            const cy = (fy + ly)/2 - rect.top;
+            bar.style.width = length + 'px';
+            bar.style.height = Math.max(first.height, last.height) * 0.9 + 'px';
+            bar.style.left = (cx - length/2) + 'px';
+            bar.style.top = (cy - (parseFloat(bar.style.height) / 2)) + 'px';
+            bar.style.transformOrigin='center center';
+            bar.style.transform = 'rotate(' + angle + 'deg)';
+            bar.style.borderRadius='20px';
+            bar.style.boxShadow='0 10px 30px rgba(255,59,48,0.16)';
+          }
+
+          // make bar visible with red marker stroke and hand-drawn texture
+          bar.style.background = 'linear-gradient(90deg, rgba(255,59,48,0.16), rgba(255,59,48,0.08))';
+          bar.style.border = '2px solid rgba(255,59,48,0.95)';
+          bar.style.boxShadow = '0 8px 28px rgba(255,59,48,0.12)';
+          // hand-drawn diagonal texture using SVG data URI as background
+          const svgPattern = `data:image/svg+xml;utf8,` + encodeURIComponent(
+            `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><g stroke='rgba(255,59,48,0.15)' stroke-width='3'><path d='M-10,30 l20,-40' /><path d='M10,30 l20,-40' /></g></svg>`
+          );
+          bar.style.backgroundImage = `url("${svgPattern}"), linear-gradient(90deg, rgba(255,59,48,0.16), rgba(255,59,48,0.08))`;
+          bar.style.backgroundRepeat = 'repeat';
+          bar.style.backgroundSize = '40px 40px';
+          // attach overlay inside bar for slightly softer fill
+          bar.appendChild(overlay);
+          highlightsHolder.appendChild(bar);
+        });
+      }
+
+      function reset(){ cells.forEach(c=>{ c.classList.remove('marked'); c.setAttribute('aria-pressed','false'); }); evaluate(); }
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      document.getElementById('randomBtn').addEventListener('click', ()=>{
+        // random mark about 8-12 cells
+        reset();
+        const n = 8 + Math.floor(Math.random()*5);
+        const idxs = [...Array(25).keys()].sort(()=>Math.random()-0.5).slice(0,n);
+        idxs.forEach(i=>cells[i].classList.add('marked'));
+        evaluate();
+      });
+
+      document.getElementById('saveBtn').addEventListener('click', ()=>{
+        const state = cells.map(c=>c.classList.contains('marked'));
+        const payload = { title: titleDisplay.textContent || '', marks: state };
+        localStorage.setItem('bingo_state_v1', JSON.stringify(payload));
+        alert('保存しました（localStorage）');
+      });
+      document.getElementById('loadBtn').addEventListener('click', ()=>{
+        const raw = localStorage.getItem('bingo_state_v1');
+        if(!raw){ alert('保存データが見つかりません'); return; }
+        try{
+          const payload = JSON.parse(raw);
+          if(payload.title) titleDisplay.textContent = payload.title;
+          if(Array.isArray(payload.marks)){
+            payload.marks.forEach((v,i)=>{ if(v) cells[i].classList.add('marked'); else cells[i].classList.remove('marked'); });
+          }
+          evaluate();
+        }catch(e){alert('読み込み失敗');}
+      });
+
+      // title set handler and load
+      setTitleBtn.addEventListener('click', ()=>{
+        const t = titleInput.value.trim();
+        titleDisplay.textContent = t || '\u00A0';
+        localStorage.setItem('bingo_title_v1', t);
+      });
+      const savedTitle = localStorage.getItem('bingo_title_v1');
+      if(savedTitle) titleDisplay.textContent = savedTitle || '\u00A0';
+
+      // export as PNG using canvas: draw table text onto canvas for stable output
+      document.getElementById('exportBtn').addEventListener('click', async ()=>{
+        try{
+          const blob = await exportAsPng();
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'bingo.png';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(()=> URL.revokeObjectURL(url), 5000);
+        }catch(e){ console.error(e); alert('画像のエクスポートに失敗しました'); }
+      });
+
+  // basic confetti spawn
+      function spawnConfetti(n){
+        for(let i=0;i<n;i++){
+          const d = document.createElement('div');
+          d.className='confetti-piece';
+          d.style.left = Math.random()*100 + 'vw';
+          d.style.background = (Math.random()>0.5)? 'var(--accent)' : 'var(--accent-2)';
+          d.style.animationDelay = (Math.random()*400) + 'ms';
+          document.body.appendChild(d);
+          setTimeout(()=> d.remove(), 1500);
+        }
+      }
+
+      // --- inline editing for table cells ---
+      // double-click to edit text; persist texts to localStorage
+      cells.forEach((td, i)=>{
+        td.addEventListener('dblclick', ()=>{
+          const current = td.querySelector('.text');
+          const val = current.textContent.trim();
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = val;
+          input.style.width = '100%';
+          input.style.boxSizing = 'border-box';
+          td.innerHTML = '';
+          td.appendChild(input);
+          input.focus();
+          input.addEventListener('blur', ()=>{ finishEdit(td, i, input.value); });
+          input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') input.blur(); if(e.key==='Escape'){ evaluate(); } });
+        });
+      });
+
+      function finishEdit(td, i, value){
+        const span = document.createElement('span');
+        span.className = 'text';
+        span.textContent = value;
+        td.innerHTML = '';
+        td.appendChild(span);
+        const mark = document.createElement('div'); mark.className='mark'; mark.textContent='〇'; td.appendChild(mark);
+        // reattach click handlers
+        td.addEventListener('click', ()=>toggle(i));
+        td.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') toggle(i)});
+        td.tabIndex = 0;
+        // persist texts
+        persistTexts();
+      }
+
+      function persistTexts(){
+        const texts = cells.map(c=> c.querySelector('.text') ? c.querySelector('.text').textContent : '');
+        localStorage.setItem('bingo_texts_v1', JSON.stringify(texts));
+      }
+
+      // load texts if exist
+      const savedTextsRaw = localStorage.getItem('bingo_texts_v1');
+      if(savedTextsRaw){
+        try{
+          const arr = JSON.parse(savedTextsRaw);
+          arr.forEach((t,i)=>{ if(typeof t==='string' && t.trim()!=='' ){ const s = cells[i].querySelector('.text'); if(s) s.textContent = t; } });
+        }catch(e){}
+      }
+
+      // reliable exporter: draw the table to canvas by drawing background, grid and text
+  async function exportAsPng(){
+        // compute layout roughly from DOM
+        const rect = table.getBoundingClientRect();
+        const titleRect = titleDisplay.getBoundingClientRect();
+        const padding = 20;
+        const width = Math.max(rect.width, 400);
+        const height = rect.height + titleRect.height + padding;
+        const dpi = 2;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(width * dpi);
+        canvas.height = Math.round(height * dpi);
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpi, dpi);
+        // white background
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,width,height);
+        // draw title
+        ctx.fillStyle = '#b22222'; ctx.font = '700 18px "Noto Sans JP", Arial';
+        ctx.fillText(titleDisplay.textContent || '', 12, 22);
+
+        // draw table cells: compute rows/cols and each cell rect
+        const rows = table.querySelectorAll('tr').length;
+        const cols = table.querySelectorAll('tr')[0].children.length;
+        const tableTop = 36;
+        const cellWidth = (width - 24) / cols;
+        const cellHeight = (height - tableTop - 12) / rows;
+        ctx.strokeStyle = '#e6e9ef'; ctx.lineWidth = 1;
+        ctx.fillStyle = '#000'; ctx.font = '12px "Noto Sans JP", Arial';
+        for(let r=0;r<rows;r++){
+          for(let c=0;c<cols;c++){
+            const x = 12 + c*cellWidth;
+            const y = tableTop + r*cellHeight;
+            ctx.strokeRect(x,y,cellWidth,cellHeight);
+            const cell = cells[r*cols + c];
+            const text = (cell.querySelector('.text')||{}).textContent || '';
+            // wrap text simple
+            wrapText(ctx, text, x+8, y+18, cellWidth-16, 16);
+          }
+        }
+
+        // highlight lines (use same detection as evaluate)
+        const marks = cells.map(c=>c.classList.contains('marked'));
+        const lines = [];
+        for(let r=0;r<5;r++) lines.push(marks.slice(r*5, r*5+5));
+        for(let c=0;c<5;c++) lines.push([0,1,2,3,4].map(r=>marks[r*5 + c]));
+        lines.push([0,6,12,18,24].map(i=>marks[i]));
+        lines.push([4,8,12,16,20].map(i=>marks[i]));
+        const completed = lines.map((ln, idx)=> ({ok: ln.every(Boolean), idx})).filter(x=>x.ok);
+        // draw red overlay bars for each completed
+        ctx.fillStyle = 'rgba(255,59,48,0.16)';
+        completed.forEach(obj=>{
+          const li = obj.idx;
+          if(li<5){ // row
+            const r = li; const x = 12; const y = tableTop + r*cellHeight; ctx.fillRect(x,y,cellWidth*cols,cellHeight);
+          } else if(li<10){ // col
+            const c = li-5; const x = 12 + c*cellWidth; const y = tableTop; ctx.fillRect(x,y,cellWidth,cellHeight*rows);
+          } else if(li===10){ // main diag
+            // draw rotated rect across centers
+            ctx.save();
+            const fx = 12 + cellWidth/2; const fy = tableTop + cellHeight/2;
+            const lx = 12 + (cols-0.5)*cellWidth; const ly = tableTop + (rows-0.5)*cellHeight;
+            const angle = Math.atan2(ly-fy, lx-fx);
+            const len = Math.hypot(lx-fx, ly-fy);
+            ctx.translate((fx+lx)/2, (fy+ly)/2);
+            ctx.rotate(angle);
+            ctx.fillRect(-len/2, -cellHeight/2, len, cellHeight);
+            ctx.restore();
+          } else if(li===11){ // anti-diag
+            ctx.save();
+            const fx = 12 + (cols-0.5)*cellWidth; const fy = tableTop + cellHeight/2;
+            const lx = 12 + cellWidth/2; const ly = tableTop + (rows-0.5)*cellHeight;
+            const angle = Math.atan2(ly-fy, lx-fx);
+            const len = Math.hypot(lx-fx, ly-fy);
+            ctx.translate((fx+lx)/2, (fy+ly)/2);
+            ctx.rotate(angle);
+            ctx.fillRect(-len/2, -cellHeight/2, len, cellHeight);
+            ctx.restore();
+          }
+        });
+
+        // return blob for caller to handle download/share
+        return await new Promise((resolve)=>{ canvas.toBlob(blob=>{ resolve(blob); }); });
+      }
+
+      function wrapText(ctx, text, x, y, maxWidth, lineHeight){
+        const words = text.split(' ');
+        let line = '';
+        for(let n=0;n<words.length;n++){
+          const testLine = line + words[n] + ' ';
+          const metrics = ctx.measureText(testLine);
+          if(metrics.width > maxWidth && n>0){ ctx.fillText(line, x, y); line = words[n] + ' '; y += lineHeight; } else { line = testLine; }
+        }
+        ctx.fillText(line, x, y);
+      }
+
+      // share handler: uses exportAsPng() to generate a PNG Blob, then tries Web Share API; fallback opens X compose and triggers download
+      document.getElementById('shareBtn').addEventListener('click', async ()=>{
+        try{
+          const blob = await exportAsPng();
+          // try Web Share API
+          const file = new File([blob], 'bingo.png', { type: 'image/png' });
+          if(navigator.canShare && navigator.canShare({ files: [file] } )){
+            try{ await navigator.share({ files: [file], title: titleDisplay.textContent || 'Bingo', text: 'My Bingo result' }); return; }catch(e){ console.warn('Web Share failed', e); }
+          }
+          // fallback: open X compose and download the image for manual attach
+          const text = encodeURIComponent((titleDisplay.textContent || '') + '\n#Bingo');
+          const composeUrl = `https://twitter.com/intent/tweet?text=${text}`;
+          window.open(composeUrl, '_blank');
+          const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'bingo.png'; document.body.appendChild(link); link.click(); link.remove(); setTimeout(()=> URL.revokeObjectURL(link.href),5000);
+        }catch(e){ console.error(e); alert('共有処理に失敗しました'); }
+      });
+
+      // initial evaluation
+      evaluate();
+
+      // re-evaluate on resize to reposition highlight bars
+      window.addEventListener('resize', ()=>{ setTimeout(evaluate,120); });
+
+    })();
+  </script>
+</body>
+</html>
