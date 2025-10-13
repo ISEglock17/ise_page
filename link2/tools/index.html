@@ -132,6 +132,7 @@
           <h4>プリセット</h4>
           <button id="presetBtn" class="preset-primary">予後悪ビンゴ</button>
           <div style="height:8px"></div>
+          <button id="presetDeepBtn" class="preset-primary" style="margin-bottom:8px">予後悪ビンゴ 深淵版</button>
           <button id="newBtn" class="preset-new">新規ビンゴ</button>
         </div>
       </div>
@@ -609,6 +610,32 @@
 
       // re-evaluate on resize to reposition highlight bars
       window.addEventListener('resize', ()=>{ setTimeout(evaluate,120); });
+
+      // --- deep preset: 予後悪ビンゴ 深淵版 ---
+      const presetDeepBtn = document.getElementById('presetDeepBtn');
+      if(presetDeepBtn){
+        presetDeepBtn.addEventListener('click', ()=>{
+          const texts = [
+            '歩き方がヘン，人生に黄金期が「あった」，不登校したことがある，音ゲーが好き，自分にある種の「強さ」を自覚している',
+            '学校中退経験アリ，FPSができない，部屋の普段見えないところが汚い，小学生の頃にいじめ，冷遇されたことがある，恋愛経験がある',
+            'ヒトカラでラブソングを避ける，「球技」が苦手，1番使っている"SNS"がTwitter，普段温厚だが，急に狂ったように怒る，自分を客観視している',
+            '癇癪を起こしたことがある，家族関係で苦手な人がいる，家族LINEがない，深い人間関係を築けない，MBTI文化がキライ',
+            '自己肯定感が低い，片親，転校経験アリ，"友達"が「いた」，同年代より，先輩・後輩と仲良くなりがち'
+          ];
+          // split by separators to ensure 25 items, if a line contains commas treat as separate cells
+          const flat = [];
+          texts.forEach(line=>{
+            // try split by Japanese comma、or full-width comma or English comma
+            const parts = line.split(/、|，|,/).map(s=>s.trim()).filter(Boolean);
+            flat.push(...parts);
+          });
+          // if we still don't have 25, pad with empty strings; if more than 25, truncate
+          while(flat.length < 25) flat.push('');
+          const use = flat.slice(0,25);
+          use.forEach((t,i)=>{ const s = cells[i].querySelector('.text'); if(s) s.textContent = t; cells[i].classList.remove('marked'); cells[i].setAttribute('aria-pressed','false'); });
+          persistTexts(); evaluate();
+        });
+      }
 
     })();
   </script>
