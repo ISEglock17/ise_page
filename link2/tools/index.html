@@ -89,7 +89,6 @@
       <input id="titleInput" type="text" placeholder="ボードタイトルを入力（例: 私のBingo）" style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6e9ef" />
       <button id="setTitleBtn" class="secondary">タイトル設定</button>
     </div>
-    <h2 id="titleDisplay" style="margin:0 0 12px 0;font-size:18px;font-weight:700;color:#b22222">&nbsp;</h2>
     <div class="controls">
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
       </div>
@@ -135,6 +134,7 @@
 
     <!-- 元のテーブルをHTMLとして組み込み。JSでセルを読み取り、5x5の操作を行います -->
     <div style="position:relative">
+      <h2 id="titleDisplay" style="margin:0 0 12px 0;font-size:18px;font-weight:700;color:#b22222">&nbsp;</h2>
       <table class="bingo" id="bingoTable">
         <tbody>
         <tr>
@@ -548,13 +548,15 @@
 
       // reliable exporter: draw the table to canvas by drawing background, grid and text
   async function exportAsPng(){
-    // use html2canvas to render the board-wrap faithfully
-    const wrapper = document.querySelector('.board-wrap');
+      // render only the table area (title + table + highlights) located in the first relative div after controls
+      const wrapper = document.querySelector('.board-wrap');
     if(!window.html2canvas){
       throw new Error('html2canvas not loaded');
     }
     // render at double resolution for crispness
-    const canvas = await html2canvas(wrapper, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false });
+    const tableArea = wrapper.querySelector('div[style*="position:relative"]');
+    const target = tableArea || wrapper;
+    const canvas = await html2canvas(target, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false });
     return await new Promise((resolve)=>{ canvas.toBlob(blob=>{ resolve(blob); }, 'image/png'); });
   }
 
