@@ -43,7 +43,7 @@
       .preset-panel{width:100%}
     }
 
-  table.bingo{width:100%;border-collapse:collapse;table-layout:fixed;font-size:14px}
+  table.bingo{width:100%;border-collapse:collapse;table-layout:fixed;font-size:14px;position:relative}
   table.bingo td{border:1px solid #e6e9ef;padding:18px;text-align:center;vertical-align:middle;cursor:pointer;position:relative;height:120px}
   /* responsive font sizing */
   table.bingo{font-size:clamp(12px,1.2vw,15px)}
@@ -204,23 +204,49 @@
   const setTitleBtn = document.getElementById('setTitleBtn');
   const titleDisplay = document.getElementById('titleDisplay');
 
-      // enhance each cell with a mark element and index
-      cells.forEach((td, i)=>{
+      // helper to initialize a cell's DOM and interactions
+      function setupCell(td, i, text){
         td.dataset.index = i;
-        const span = document.createElement('span');
-        span.className='text';
-        span.innerHTML = td.innerHTML;
         td.innerHTML = '';
+        const span = document.createElement('span');
+        span.className = 'text';
+        span.textContent = (typeof text === 'string') ? text : td.innerHTML;
         td.appendChild(span);
         const mark = document.createElement('div');
-        mark.className='mark';
-        mark.textContent='〇';
+        mark.className = 'mark';
+        mark.textContent = '〇';
         td.appendChild(mark);
-        td.addEventListener('click', ()=>toggle(i));
-        td.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') toggle(i)});
+
+        // accessibility and state
         td.tabIndex = 0;
-        td.setAttribute('aria-pressed','false');
-      });
+        td.setAttribute('aria-pressed', td.classList.contains('marked') ? 'true' : 'false');
+
+        // open editor for this cell (used by long-press or keyboard)
+        function openEditor(){
+          const current = td.querySelector('.text');
+          const val = current ? current.textContent.trim() : '';
+          const input = document.createElement('input');
+          input.type = 'text'; input.value = val; input.style.width = '100%'; input.style.boxSizing = 'border-box';
+          td.innerHTML = '';
+          td.appendChild(input);
+          input.focus();
+          input.select && input.select();
+          input.addEventListener('blur', ()=>{ finishEdit(td, i, input.value); });
+          input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') input.blur(); if(e.key==='Escape') { finishEdit(td, i, val); } if(e.key==='Tab'){ input.blur(); }});
+        }
+
+        // long-press handling: pointerdown -> open editor if held; pointerup short -> toggle mark
+        let pressTimer = null; let longPress = false;
+        td.onpointerdown = (e)=>{ longPress = false; if(pressTimer) clearTimeout(pressTimer); pressTimer = setTimeout(()=>{ longPress = true; openEditor(); }, 600); };
+        td.onpointerup = (e)=>{ if(pressTimer){ clearTimeout(pressTimer); pressTimer = null; } if(!longPress){ toggle(i); } };
+        td.onpointerleave = ()=>{ if(pressTimer){ clearTimeout(pressTimer); pressTimer = null; } };
+
+        // keyboard: Enter/Space toggles, F2 opens editor for convenience
+        td.onkeydown = (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggle(i); } else if(e.key==='F2'){ e.preventDefault(); openEditor(); } };
+      }
+
+      // initialize all cells
+      cells.forEach((td,i)=> setupCell(td, i, (td.querySelector('.text')||{}).textContent || td.innerHTML));
 
       function toggle(i){
         const td = cells[i];
@@ -257,100 +283,80 @@
       }
 
       function renderHighlights(lineIdxs){
-        // remove current
-        highlightsHolder.innerHTML='';
+        highlightsHolder.innerHTML = '';
         if(lineIdxs.length===0) return;
-        lineIdxs.forEach(li=>{
-          const el = document.createElement('div');
-          el.className='line-highlight';
-          el.style.left = 0;
-          el.style.top = 0;
-          el.style.right = 0;
-          el.style.bottom = 0;
-          el.style.display='flex';
-          el.style.pointerEvents='none';
+
+        // Position highlightsHolder relative to the table's offset parent
+        const parent = table.parentElement; // the div with position:relative
+        const tableLeft = table.offsetLeft;
+        const tableTop = table.offsetTop;
+        highlightsHolder.style.position = 'absolute';
+        highlightsHolder.style.left = tableLeft + 'px';
+        highlightsHolder.style.top = tableTop + 'px';
+        highlightsHolder.style.width = table.offsetWidth + 'px';
+        highlightsHolder.style.height = table.offsetHeight + 'px';
+        highlightsHolder.style.pointerEvents = 'none';
+
+        lineIdxs.forEach(li => {
+          const bar = document.createElement('div');
+          bar.style.position = 'absolute';
+          bar.style.pointerEvents = 'none';
+          bar.style.zIndex = 4;
 
           const overlay = document.createElement('div');
-          // red marker style overlay (avoid mix-blend and backdrop blur which caused mosaic)
-          overlay.style.position='absolute';
-          overlay.style.inset='0';
-          overlay.style.borderRadius='10px';
-          overlay.style.background='linear-gradient(90deg, rgba(255,59,48,0.18), rgba(255,59,48,0.12))';
-          overlay.style.opacity = 0.95;
-
-          // we will position a stroked bar across the table for the corresponding line.
-          const rect = table.getBoundingClientRect();
-          const cellRect = cells[0].getBoundingClientRect();
-
-          const bar = document.createElement('div');
-          bar.style.position='absolute';
-          bar.style.zIndex=4;
-          bar.style.pointerEvents='none';
+          overlay.style.position = 'absolute'; overlay.style.inset = '0'; overlay.style.borderRadius = '8px';
+          overlay.style.background = 'linear-gradient(90deg, rgba(255,59,48,0.14), rgba(255,59,48,0.08))'; overlay.style.opacity = 0.95;
 
           if(li < 5){
             // row
             const r = li;
             const first = cells[r*5];
             const last = cells[r*5 + 4];
-            const a = first.getBoundingClientRect();
-            const b = last.getBoundingClientRect();
-            const top = a.top - rect.top + table.scrollTop + 4;
-            bar.style.left = (a.left - rect.left + 4) + 'px';
-            bar.style.top = top + 'px';
-            bar.style.width = (b.right - a.left - 8) + 'px';
-            bar.style.height = (a.height - 8) + 'px';
-            bar.style.borderRadius='10px';
-            bar.style.boxShadow='0 8px 30px rgba(43,138,239,0.12)';
+            const left = first.offsetLeft + 4;
+            const top = first.offsetTop + 4;
+            const width = (last.offsetLeft + last.offsetWidth) - first.offsetLeft - 8;
+            const height = first.offsetHeight - 8;
+            bar.style.left = left + 'px'; bar.style.top = top + 'px'; bar.style.width = width + 'px'; bar.style.height = height + 'px';
+            bar.style.borderRadius = '8px';
           } else if(li < 10){
             // column
             const c = li - 5;
             const first = cells[c];
             const last = cells[c + 4*5];
-            const a = first.getBoundingClientRect();
-            const b = last.getBoundingClientRect();
-            bar.style.left = (a.left - rect.left + 4) + 'px';
-            bar.style.top = (a.top - rect.top + 4) + 'px';
-            bar.style.width = (a.width - 8) + 'px';
-            bar.style.height = (b.bottom - a.top - 8) + 'px';
-            bar.style.borderRadius='10px';
-            bar.style.boxShadow='0 8px 30px rgba(255,122,89,0.14)';
-          } else if(li===10 || li===11){
-            // diagonals: compute from the list of indices
-            const idxs = (li===10) ? [0,6,12,18,24] : [4,8,12,16,20];
-            const first = cells[idxs[0]].getBoundingClientRect();
-            const last = cells[idxs[idxs.length-1]].getBoundingClientRect();
-            // center points of first and last
-            const fx = first.left + first.width/2;
-            const fy = first.top + first.height/2;
-            const lx = last.left + last.width/2;
-            const ly = last.top + last.height/2;
+            const left = first.offsetLeft + 4;
+            const top = first.offsetTop + 4;
+            const width = first.offsetWidth - 8;
+            const height = (last.offsetTop + last.offsetHeight) - first.offsetTop - 8;
+            bar.style.left = left + 'px'; bar.style.top = top + 'px'; bar.style.width = width + 'px'; bar.style.height = height + 'px';
+            bar.style.borderRadius = '8px';
+          } else {
+            // diagonals
+            const idxs = (li === 10) ? [0,6,12,18,24] : [4,8,12,16,20];
+            const first = cells[idxs[0]]; const last = cells[idxs[idxs.length-1]];
+            const fx = first.offsetLeft + first.offsetWidth/2;
+            const fy = first.offsetTop + first.offsetHeight/2;
+            const lx = last.offsetLeft + last.offsetWidth/2;
+            const ly = last.offsetTop + last.offsetHeight/2;
             const angle = Math.atan2(ly - fy, lx - fx) * 180/Math.PI;
             const length = Math.hypot(lx - fx, ly - fy);
-            // position bar centered between first and last
-            const cx = (fx + lx)/2 - rect.left;
-            const cy = (fy + ly)/2 - rect.top;
+            const cx = (fx + lx)/2;
+            const cy = (fy + ly)/2;
             bar.style.width = length + 'px';
-            bar.style.height = Math.max(first.height, last.height) * 0.9 + 'px';
+            bar.style.height = Math.max(first.offsetHeight, last.offsetHeight) * 0.6 + 'px';
             bar.style.left = (cx - length/2) + 'px';
             bar.style.top = (cy - (parseFloat(bar.style.height) / 2)) + 'px';
-            bar.style.transformOrigin='center center';
+            bar.style.transformOrigin = 'center center';
             bar.style.transform = 'rotate(' + angle + 'deg)';
-            bar.style.borderRadius='20px';
-            bar.style.boxShadow='0 10px 30px rgba(255,59,48,0.16)';
+            bar.style.borderRadius = '12px';
           }
 
-          // make bar visible with red marker stroke and hand-drawn texture
-          bar.style.background = 'linear-gradient(90deg, rgba(255,59,48,0.16), rgba(255,59,48,0.08))';
-          bar.style.border = '2px solid rgba(255,59,48,0.95)';
-          bar.style.boxShadow = '0 8px 28px rgba(255,59,48,0.12)';
-          // hand-drawn diagonal texture using SVG data URI as background
-          const svgPattern = `data:image/svg+xml;utf8,` + encodeURIComponent(
-            `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><g stroke='rgba(255,59,48,0.15)' stroke-width='3'><path d='M-10,30 l20,-40' /><path d='M10,30 l20,-40' /></g></svg>`
-          );
-          bar.style.backgroundImage = `url("${svgPattern}"), linear-gradient(90deg, rgba(255,59,48,0.16), rgba(255,59,48,0.08))`;
-          bar.style.backgroundRepeat = 'repeat';
-          bar.style.backgroundSize = '40px 40px';
-          // attach overlay inside bar for slightly softer fill
+          // style bar (slimmer)
+          bar.style.background = 'linear-gradient(90deg, rgba(255,59,48,0.12), rgba(255,59,48,0.06))';
+          bar.style.border = '1px solid rgba(255,59,48,0.9)';
+          bar.style.boxShadow = '0 4px 12px rgba(255,59,48,0.08)';
+          const svgPattern = `data:image/svg+xml;utf8,` + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><g stroke='rgba(255,59,48,0.12)' stroke-width='2'><path d='M-10,30 l20,-40' /><path d='M10,30 l20,-40' /></g></svg>`);
+          bar.style.backgroundImage = `url("${svgPattern}"), linear-gradient(90deg, rgba(255,59,48,0.12), rgba(255,59,48,0.06))`;
+          bar.style.backgroundRepeat = 'repeat'; bar.style.backgroundSize = '40px 40px';
           bar.appendChild(overlay);
           highlightsHolder.appendChild(bar);
         });
@@ -458,37 +464,11 @@
         }
       }
 
-      // --- inline editing for table cells ---
-      // double-click to edit text; persist texts to localStorage
-      cells.forEach((td, i)=>{
-        td.addEventListener('dblclick', ()=>{
-          const current = td.querySelector('.text');
-          const val = current.textContent.trim();
-          const input = document.createElement('input');
-          input.type = 'text';
-          input.value = val;
-          input.style.width = '100%';
-          input.style.boxSizing = 'border-box';
-          td.innerHTML = '';
-          td.appendChild(input);
-          input.focus();
-          input.addEventListener('blur', ()=>{ finishEdit(td, i, input.value); });
-          input.addEventListener('keydown', (e)=>{ if(e.key==='Enter') input.blur(); if(e.key==='Escape'){ evaluate(); } });
-        });
-      });
+      // (editing is handled via long-press or F2 key; no dblclick binding)
 
       function finishEdit(td, i, value){
-        const span = document.createElement('span');
-        span.className = 'text';
-        span.textContent = value;
-        td.innerHTML = '';
-        td.appendChild(span);
-        const mark = document.createElement('div'); mark.className='mark'; mark.textContent='〇'; td.appendChild(mark);
-        // reattach click handlers
-        td.addEventListener('click', ()=>toggle(i));
-        td.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') toggle(i)});
-        td.tabIndex = 0;
-        // persist texts
+        // replace cell contents and re-run setupCell to attach consistent handlers
+        setupCell(td, i, value);
         persistTexts();
       }
 
