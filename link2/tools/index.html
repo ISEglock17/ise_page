@@ -57,6 +57,12 @@
       opacity:1;transform:scale(1);background:rgba(255,59,48,0.12);border:3px solid rgba(255,59,48,0.95);color:rgba(255,59,48,0.95);box-shadow:0 8px 24px rgba(255,59,48,0.12)
     }
 
+    /* make mark transparent to pointer events so clicks hit the cell */
+    table.bingo td .mark{ pointer-events: none; }
+
+    /* highlights holder sits over the table */
+    #highlightsHolder{ position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; z-index:4 }
+
     /* bingo highlight for completed lines */
     .line-highlight{position:absolute;pointer-events:none;z-index:5}
     .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
@@ -204,6 +210,11 @@
   const setTitleBtn = document.getElementById('setTitleBtn');
   const titleDisplay = document.getElementById('titleDisplay');
 
+      // ensure highlightsHolder is a child of the table so coordinates are table-relative
+      if(highlightsHolder && highlightsHolder.parentElement !== table){
+        table.appendChild(highlightsHolder);
+      }
+
       // helper to initialize a cell's DOM and interactions
       function setupCell(td, i, text){
         td.dataset.index = i;
@@ -290,12 +301,12 @@
         const parent = table.parentElement; // the div with position:relative
         const tableLeft = table.offsetLeft;
         const tableTop = table.offsetTop;
-        highlightsHolder.style.position = 'absolute';
-        highlightsHolder.style.left = tableLeft + 'px';
-        highlightsHolder.style.top = tableTop + 'px';
-        highlightsHolder.style.width = table.offsetWidth + 'px';
-        highlightsHolder.style.height = table.offsetHeight + 'px';
-        highlightsHolder.style.pointerEvents = 'none';
+  highlightsHolder.style.position = 'absolute';
+  highlightsHolder.style.left = '0px';
+  highlightsHolder.style.top = '0px';
+  highlightsHolder.style.width = table.offsetWidth + 'px';
+  highlightsHolder.style.height = table.offsetHeight + 'px';
+  highlightsHolder.style.pointerEvents = 'none';
 
         lineIdxs.forEach(li => {
           const bar = document.createElement('div');
@@ -312,8 +323,8 @@
             const r = li;
             const first = cells[r*5];
             const last = cells[r*5 + 4];
-            const left = first.offsetLeft + 4;
-            const top = first.offsetTop + 4;
+            const left = first.offsetLeft + 4 - 0.5;
+            const top = first.offsetTop + 4 - 0.5;
             const width = (last.offsetLeft + last.offsetWidth) - first.offsetLeft - 8;
             const height = first.offsetHeight - 8;
             bar.style.left = left + 'px'; bar.style.top = top + 'px'; bar.style.width = width + 'px'; bar.style.height = height + 'px';
@@ -323,8 +334,8 @@
             const c = li - 5;
             const first = cells[c];
             const last = cells[c + 4*5];
-            const left = first.offsetLeft + 4;
-            const top = first.offsetTop + 4;
+            const left = first.offsetLeft + 4 - 0.5;
+            const top = first.offsetTop + 4 - 0.5;
             const width = first.offsetWidth - 8;
             const height = (last.offsetTop + last.offsetHeight) - first.offsetTop - 8;
             bar.style.left = left + 'px'; bar.style.top = top + 'px'; bar.style.width = width + 'px'; bar.style.height = height + 'px';
@@ -343,8 +354,8 @@
             const cy = (fy + ly)/2;
             bar.style.width = length + 'px';
             bar.style.height = Math.max(first.offsetHeight, last.offsetHeight) * 0.6 + 'px';
-            bar.style.left = (cx - length/2) + 'px';
-            bar.style.top = (cy - (parseFloat(bar.style.height) / 2)) + 'px';
+            bar.style.left = (cx - length/2 - 0.5) + 'px';
+            bar.style.top = (cy - (parseFloat(bar.style.height) / 2) - 0.5) + 'px';
             bar.style.transformOrigin = 'center center';
             bar.style.transform = 'rotate(' + angle + 'deg)';
             bar.style.borderRadius = '12px';
