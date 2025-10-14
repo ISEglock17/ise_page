@@ -28,6 +28,21 @@
     }
     .board-wrap{background:white;border-radius:12px;padding:16px;box-shadow:0 6px 20px rgba(11,18,32,0.08);max-width:1100px;width:100%}
 
+    /* horizontal scrolling wrapper
+       - default: hide horizontal scrollbar (desktop/large screens) and allow overflow visible so highlight shadows don't trigger scrolling
+       - only enable horizontal scrolling and show scrollbars on narrow portrait smartphones via media query
+    */
+    .table-scroll{ overflow-x: hidden; overflow-y: visible; -ms-overflow-style: none; scrollbar-width: none; }
+    .table-scroll::-webkit-scrollbar{ display: none; }
+
+    /* allow horizontal scrolling only on portrait mobile (narrow screens) so scrollbar appears only when needed */
+    @media (max-width:480px) and (orientation:portrait){
+      .table-scroll{ overflow-x: auto; overflow-y: visible; -webkit-overflow-scrolling: touch; -ms-overflow-style: auto; scrollbar-width: auto; }
+      /* re-enable a lightweight native scrollbar for webkit browsers on mobile portrait */
+      .table-scroll::-webkit-scrollbar{ height: 10px; }
+      .table-scroll::-webkit-scrollbar-thumb{ background: rgba(0,0,0,0.18); border-radius: 6px; }
+    }
+
   /* controls layout and RPG-style preset panel */
   .controls-area{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
   .controls-left{flex:1;display:flex;flex-direction:column;gap:8px}
@@ -135,6 +150,8 @@
           <button id="presetDeepBtn" class="preset-primary" style="margin-bottom:8px">予後悪ビンゴ 深淵版</button>
           <div style="height:6px"></div>
           <button id="presetRikeiBtn" class="preset-primary" style="margin-bottom:8px">理系大学生 後悔ビンゴ</button>
+          <div style="height:6px"></div>
+          <button id="presetFemaleBtn" class="preset-primary" style="margin-bottom:8px">予後悪ビンゴ ～女ver.～</button>
           <button id="newBtn" class="preset-new">新規ビンゴ</button>
         </div>
       </div>
@@ -144,7 +161,8 @@
     <!-- 元のテーブルをHTMLとして組み込み。JSでセルを読み取り、5x5の操作を行います -->
     <div style="position:relative">
       <h2 id="titleDisplay" style="margin:0 0 12px 0;font-size:18px;font-weight:700;color:#b22222">&nbsp;</h2>
-      <table class="bingo" id="bingoTable">
+  <div class="table-scroll">
+  <table class="bingo" id="bingoTable">
         <tbody>
         <tr>
           <td>学歴レスバで東大の学生証を見せているのに憧れたことがある</td>
@@ -182,10 +200,11 @@
           <td>変な音楽の趣味</td>
         </tr>
         </tbody>
-      </table>
+  </table>
+  </div>
 
-      <!-- line-highlights will be injected here -->
-      <div id="highlightsHolder"></div>
+  <!-- line-highlights will be injected here -->
+  <div id="highlightsHolder"></div>
     </div>
 
       <!-- bulk edit modal -->
@@ -707,6 +726,42 @@
       if(presetRikeiBtn){
         presetRikeiBtn.addEventListener('click', ()=>{
           rikeiPreset.forEach((t,i)=>{ const s = cells[i].querySelector('.text'); if(s) s.textContent = t; cells[i].classList.remove('marked'); cells[i].setAttribute('aria-pressed','false'); });
+          persistTexts(); evaluate();
+        });
+      }
+
+      // 予後悪ビンゴ ～女ver.～ preset
+      const femalePreset = [
+        '恋愛経験ないor不幸な恋愛しかしない',
+        '文化部or帰宅部',
+        '通話垢を持っている',
+        'TikTok冷笑している',
+        '身長が155cm以下',
+        '髪質終わってる',
+        '体力がない',
+        '自律神経弱い',
+        'スクリーンタイム8時間以上',
+        'BL通ってる',
+        '自己評価低い',
+        '不登校経験あり',
+        'これをやってツイートしてしまう',
+        '大人数になると話せない',
+        'ネットで創作活動をしたことがある',
+        'だれとも趣味合わない',
+        '箱入り',
+        'ありえん芋だった頃がある',
+        '長女',
+        'メイクしないorメイク凝りすぎ',
+        '父親と仲悪い',
+        'Twitterのアカウント5個以上ある',
+        '女友達が少ない',
+        '試着できない',
+        '店員に聞き返されることが多い'
+      ];
+      const presetFemaleBtn = document.getElementById('presetFemaleBtn');
+      if(presetFemaleBtn){
+        presetFemaleBtn.addEventListener('click', ()=>{
+          femalePreset.forEach((t,i)=>{ const s = cells[i].querySelector('.text'); if(s) s.textContent = t; cells[i].classList.remove('marked'); cells[i].setAttribute('aria-pressed','false'); });
           persistTexts(); evaluate();
         });
       }
