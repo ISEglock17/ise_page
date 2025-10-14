@@ -149,9 +149,11 @@
           <div style="height:8px"></div>
           <button id="presetDeepBtn" class="preset-primary" style="margin-bottom:8px">予後悪ビンゴ 深淵版</button>
           <div style="height:6px"></div>
-          <button id="presetRikeiBtn" class="preset-primary" style="margin-bottom:8px">理系大学生 後悔ビンゴ</button>
-          <div style="height:6px"></div>
           <button id="presetFemaleBtn" class="preset-primary" style="margin-bottom:8px">予後悪ビンゴ ～女ver.～</button>
+          <div style="height:6px"></div>
+          <button id="presetgoodBtn" class="preset-primary" style="margin-bottom:8px">予後良ビンゴ (大学生向け)</button>
+          <div style="height:6px"></div>
+          <button id="presetRikeiBtn" class="preset-primary" style="margin-bottom:8px">理系大学生 後悔ビンゴ</button>
           <button id="newBtn" class="preset-new">新規ビンゴ</button>
         </div>
       </div>
@@ -762,6 +764,43 @@
       if(presetFemaleBtn){
         presetFemaleBtn.addEventListener('click', ()=>{
           femalePreset.forEach((t,i)=>{ const s = cells[i].querySelector('.text'); if(s) s.textContent = t; cells[i].classList.remove('marked'); cells[i].setAttribute('aria-pressed','false'); });
+          persistTexts(); evaluate();
+        });
+      }
+
+
+       // 予後良ビンゴ (大学生向け) preset
+      const goodPreset = [
+        '留年・浪人した事ない',
+        'インスタをやっている',
+        '身長が男170cm以上，女160cm以上',
+        '不登校歴なし',
+        'バイトをしている',
+        '学歴がMARCH以上',
+        '友達と旅行した事がある',
+        '高校が共学かつ全日制',
+        '恋人がいる',
+        'クレカを持っている',
+        '奨学金を借りてない',
+        '髪を染めた事がある',
+        '友達がいる',
+        'GPA2.0以上',
+        'スタバ新作追ってる',
+        '全授業誰かと受けてる',
+        'スマホがiPhone',
+        '飲み会が好き',
+        '大学は本キャン',
+        '告白された事がある',
+        '非童貞',
+        'サークルに入っている',
+        '免許を持っている',
+        '中高運動部',
+        'BeRealをやっている',
+      ];
+      const presetgoodBtn = document.getElementById('presetgoodBtn');
+      if(presetgoodBtn){
+        presetgoodBtn.addEventListener('click', ()=>{
+          goodPreset.forEach((t,i)=>{ const s = cells[i].querySelector('.text'); if(s) s.textContent = t; cells[i].classList.remove('marked'); cells[i].setAttribute('aria-pressed','false'); });
           persistTexts(); evaluate();
         });
       }
