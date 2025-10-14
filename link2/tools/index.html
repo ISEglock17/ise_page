@@ -153,6 +153,8 @@
           <div style="height:6px"></div>
           <button id="presetgoodBtn" class="preset-primary" style="margin-bottom:8px">予後良ビンゴ (大学生向け)</button>
           <div style="height:6px"></div>
+          <button id="presetOtakuBtn" class="preset-primary" style="margin-bottom:8px">オタク沼ビンゴ</button>
+          <div style="height:6px"></div>
           <button id="presetRikeiBtn" class="preset-primary" style="margin-bottom:8px">理系大学生 後悔ビンゴ</button>
           <button id="newBtn" class="preset-new">新規ビンゴ</button>
         </div>
@@ -804,6 +806,50 @@
           persistTexts(); evaluate();
         });
       }
+
+      // オタク沼ビンゴ preset
+      const otakuPreset = [
+        '初めて買った円盤が宝物になっている',
+        '推しの誕生日は毎年イベント化している',
+        '推しのせいで徹夜した',
+        'グッズの値段を家族に言えない',
+        '推しが夢に出てきたことがある',
+        '推しの曲で涙腺崩壊する',
+        '生活費の一部がオタ活に消えている',
+        '聖地巡礼に行ったことがある',
+        '初見の人にオタクトークで一気に仲良くなれる',
+        '既に2期3期の妄想が止まらない',
+        'グッズ整理がめちゃくちゃ得意（だが未整理）',
+        '推し語りが止まらず深夜まで語る',
+        '別ジャンルに手を出して沼ハシゴしたことがある',
+        '推しを布教して布教成功したことがある',
+        '二次創作を1つ以上作ったことがある（創作 or コピ本）',
+        '同じ推しの古参と語り合える自信がある',
+        '声優／作者の過去作をほとんど遡って観た／読んだ',
+        'グッズの再販で絶望したことがある',
+        '推しがSNSで一言呟くだけで1日を消費する',
+        'イベントで推しと距離が近い場所に行けた経験がある',
+        'ときどき「これでいいのか」と現実を疑う',
+        'コラボ商品を見つけると即買いしてしまう',
+        '推しの休養で心が空になる経験がある',
+        '推しの過去の発言を引用して語るクセがある',
+        '「推し＝生活の中心」になっている'
+      ];
+
+      const presetOtakuBtn = document.getElementById('presetOtakuBtn');
+      if(presetOtakuBtn){
+        presetOtakuBtn.addEventListener('click', ()=>{
+          otakuPreset.forEach((t,i)=>{
+            const s = cells[i].querySelector('.text');
+            if(s) s.textContent = t;
+            cells[i].classList.remove('marked');
+            cells[i].setAttribute('aria-pressed','false');
+          });
+          persistTexts?.(); // 既存のpersist関数があれば呼ぶ
+          evaluate();
+        });
+      }
+
 
     })();
   </script>
